@@ -1,0 +1,62 @@
+[
+  {
+    "id": "rene",
+    "name": "Rene",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "horst",
+    "name": "Horst",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "victor",
+    "name": "Victor",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "teddy",
+    "name": "Teddy",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "bine",
+    "name": "Bine",
+    "telefon": "Sabine Poguntke",
+    "mobil": ""
+  },
+  {
+    "id": "meiki",
+    "name": "Meiki",
+    "telefon": "012365",
+    "mobil": "Michael Brünjes"
+  },
+  {
+    "id": "erna",
+    "name": "Erna",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "horstS",
+    "name": "Horst",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "maria",
+    "name": "Maria",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "michi",
+    "name": "Michi",
+    "telefon": "",
+    "mobil": ""
+  }
+]

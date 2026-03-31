@@ -1,0 +1,271 @@
+{
+  "jahr": 2025,
+  "start_date": "2025-09-15",
+  "end_date": "2026-04-26",
+  "last_group": "freitag",
+  "groups": {
+    "freitag": {
+      "wochentag": "Freitag",
+      "platz": "3",
+      "startzeit": "16:00",
+      "endzeit": "17:30",
+      "seed": 2,
+      "players": {
+        "erna": {
+          "nicht_moeglich": [
+            "19.09.2025",
+            "03.10.2025",
+            "31.10.2025",
+            "14.11.2025",
+            "12.12.2025",
+            "10.10.2025"
+          ]
+        },
+        "horstS": {
+          "nicht_moeglich": []
+        },
+        "meiki": {
+          "nicht_moeglich": [
+            "19.09.2025",
+            "31.10.2025",
+            "14.11.2025",
+            "12.12.2025",
+            "10.10.2025"
+          ]
+        },
+        "teddy": {
+          "nicht_moeglich": [
+            "26.09.2025"
+          ]
+        },
+        "maria": {
+          "nicht_moeglich": [
+            "28.11.2025",
+            "12.12.2025",
+            "14.11.2025"
+          ]
+        },
+        "michi": {
+          "nicht_moeglich": []
+        },
+        "rene": {
+          "nicht_moeglich": [
+            "26.09.2025",
+            "17.10.2025",
+            "24.10.2025",
+            "27.03.2026",
+            "03.04.2026"
+          ]
+        },
+        "bine": {
+          "nicht_moeglich": [
+            "17.10.2025",
+            "26.09.2025"
+          ]
+        }
+      },
+      "verteilung": {
+        "19.09.2025": [
+          "horstS",
+          "teddy",
+          "bine",
+          "michi"
+        ],
+        "26.09.2025": [
+          "erna",
+          "maria",
+          "meiki",
+          "horstS"
+        ],
+        "03.10.2025": [
+          "rene",
+          "michi",
+          "maria",
+          "bine"
+        ],
+        "10.10.2025": [
+          "teddy",
+          "maria",
+          "rene",
+          "horstS"
+        ],
+        "17.10.2025": [
+          "erna",
+          "michi",
+          "maria",
+          "teddy"
+        ],
+        "24.10.2025": [
+          "bine",
+          "erna",
+          "meiki",
+          "teddy"
+        ],
+        "31.10.2025": [
+          "rene",
+          "horstS",
+          "michi",
+          "maria"
+        ],
+        "07.11.2025": [
+          "erna",
+          "rene",
+          "bine",
+          "meiki"
+        ],
+        "14.11.2025": [
+          "teddy",
+          "rene",
+          "michi",
+          "horstS"
+        ],
+        "21.11.2025": [
+          "maria",
+          "bine",
+          "meiki",
+          "erna"
+        ],
+        "28.11.2025": [
+          "teddy",
+          "meiki",
+          "rene",
+          "michi"
+        ],
+        "05.12.2025": [
+          "horstS",
+          "bine",
+          "maria",
+          "erna"
+        ],
+        "12.12.2025": [
+          "rene",
+          "bine",
+          "teddy",
+          "horstS"
+        ],
+        "19.12.2025": [
+          "michi",
+          "erna",
+          "meiki",
+          "maria"
+        ],
+        "26.12.2025": [
+          "bine",
+          "maria",
+          "rene",
+          "teddy"
+        ],
+        "02.01.2026": [
+          "horstS",
+          "meiki",
+          "michi",
+          "erna"
+        ],
+        "09.01.2026": [
+          "bine",
+          "michi",
+          "maria",
+          "teddy"
+        ],
+        "16.01.2026": [
+          "rene",
+          "erna",
+          "horstS",
+          "meiki"
+        ],
+        "23.01.2026": [
+          "teddy",
+          "erna",
+          "rene",
+          "maria"
+        ],
+        "30.01.2026": [
+          "bine",
+          "michi",
+          "horstS",
+          "meiki"
+        ],
+        "06.02.2026": [
+          "teddy",
+          "meiki",
+          "maria",
+          "horstS"
+        ],
+        "13.02.2026": [
+          "erna",
+          "rene",
+          "michi",
+          "bine"
+        ],
+        "20.02.2026": [
+          "meiki",
+          "teddy",
+          "horstS",
+          "erna"
+        ],
+        "27.02.2026": [
+          "maria",
+          "bine",
+          "michi",
+          "rene"
+        ],
+        "06.03.2026": [
+          "meiki",
+          "teddy",
+          "maria",
+          "bine"
+        ],
+        "13.03.2026": [
+          "erna",
+          "michi",
+          "horstS",
+          "rene"
+        ],
+        "20.03.2026": [
+          "teddy",
+          "erna",
+          "michi",
+          "bine"
+        ],
+        "27.03.2026": [
+          "maria",
+          "meiki",
+          "horstS",
+          "michi"
+        ],
+        "03.04.2026": [
+          "teddy",
+          "erna",
+          "horstS",
+          "bine"
+        ],
+        "10.04.2026": [
+          "rene",
+          "meiki",
+          "maria",
+          "teddy"
+        ],
+        "17.04.2026": [
+          "rene",
+          "erna",
+          "maria",
+          "michi"
+        ],
+        "24.04.2026": [
+          "horstS",
+          "bine",
+          "rene",
+          "meiki"
+        ]
+      }
+    },
+    "dienstag": {
+      "wochentag": "Dienstag",
+      "platz": "2",
+      "startzeit": "10:00",
+      "endzeit": "12:00",
+      "players": {},
+      "verteilung": {}
+    }
+  }
+}

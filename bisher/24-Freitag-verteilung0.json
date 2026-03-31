@@ -1,0 +1,306 @@
+{
+    "start_date": "2024-10-04",
+    "end_date": "2025-04-25",
+    "verfuegbare_termine": [],
+    "players": [
+        {
+            "dummyname": "Spieler 1",
+            "name": "Erna",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": [
+                "04.10.2024",
+                "01.11.2024",
+                "15.11.2024",
+                "29.11.2024",
+                "20.12.2024",
+                "31.01.2025",
+                "14.02.2025"
+            ]
+        },
+        {
+            "dummyname": "Spieler 2",
+            "name": "Meiki",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": [
+                "04.10.2024",
+                "25.10.2024",
+                "01.11.2024",
+                "15.11.2024",
+                "31.01.2025",
+                "14.02.2025"
+            ]
+        },
+        {
+            "dummyname": "Spieler 3",
+            "name": "Biene",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": [
+                "11.10.2024"
+            ]
+        },
+        {
+            "dummyname": "Spieler 4",
+            "name": "Teddy",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": []
+        },
+        {
+            "dummyname": "Spieler 5",
+            "name": "Victor",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": [
+                "04.10.2024",
+                "18.10.2024",
+                "01.11.2024",
+                "15.11.2024",
+                "29.11.2024",
+                "13.12.2024",
+                "27.12.2024",
+                "10.01.2025",
+                "24.01.2025",
+                "07.02.2025",
+                "21.02.2025",
+                "07.03.2025",
+                "21.03.2025",
+                "04.04.2025",
+                "18.04.2025"
+            ]
+        },
+        {
+            "dummyname": "Spieler 6",
+            "name": "Renate",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": [
+                "04.10.2024",
+                "18.10.2024",
+                "01.11.2024",
+                "15.11.2024",
+                "29.11.2024",
+                "13.12.2024",
+                "27.12.2024",
+                "10.01.2025",
+                "24.01.2025",
+                "07.02.2025",
+                "21.02.2025",
+                "07.03.2025",
+                "21.03.2025",
+                "04.04.2025",
+                "18.04.2025"
+            ]
+        },
+        {
+            "dummyname": "Spieler 7",
+            "name": "Horst",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": []
+        },
+        {
+            "dummyname": "Spieler 8",
+            "name": "Michi",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": [
+                "13.12.2024"
+            ]
+        },
+        {
+            "dummyname": "Spieler 9",
+            "name": "Rene",
+            "telefon": "",
+            "mobil": "",
+            "nicht_verfuegbare_termine": [
+                "11.10.2024",
+                "18.10.2024"
+            ]
+        }
+    ],
+    "verteilung": {
+        "04.10.2024": [
+            "Horst",
+            "Rene",
+            "Teddy",
+            "Biene"
+        ],
+        "11.10.2024": [
+            "Renate",
+            "Victor",
+            "Michi",
+            "Erna"
+        ],
+        "18.10.2024": [
+            "Meiki",
+            "Biene",
+            "Erna",
+            "Teddy"
+        ],
+        "25.10.2024": [
+            "Michi",
+            "Rene",
+            "Renate",
+            "Horst"
+        ],
+        "01.11.2024": [
+            "Teddy",
+            "Michi",
+            "Horst",
+            "Biene"
+        ],
+        "08.11.2024": [
+            "Meiki",
+            "Victor",
+            "Rene",
+            "Erna"
+        ],
+        "15.11.2024": [
+            "Michi",
+            "Rene",
+            "Teddy",
+            "Biene"
+        ],
+        "22.11.2024": [
+            "Renate",
+            "Meiki",
+            "Victor",
+            "Horst"
+        ],
+        "29.11.2024": [
+            "Meiki",
+            "Michi",
+            "Horst",
+            "Biene"
+        ],
+        "06.12.2024": [
+            "Renate",
+            "Erna",
+            "Victor",
+            "Teddy"
+        ],
+        "13.12.2024": [
+            "Erna",
+            "Rene",
+            "Meiki",
+            "Horst"
+        ],
+        "20.12.2024": [
+            "Victor",
+            "Renate",
+            "Biene",
+            "Rene"
+        ],
+        "27.12.2024": [
+            "Michi",
+            "Erna",
+            "Meiki",
+            "Teddy"
+        ],
+        "03.01.2025": [
+            "Renate",
+            "Victor",
+            "Biene",
+            "Meiki"
+        ],
+        "10.01.2025": [
+            "Michi",
+            "Erna",
+            "Rene",
+            "Horst"
+        ],
+        "17.01.2025": [
+            "Teddy",
+            "Victor",
+            "Renate",
+            "Horst"
+        ],
+        "24.01.2025": [
+            "Michi",
+            "Meiki",
+            "Teddy",
+            "Rene"
+        ],
+        "31.01.2025": [
+            "Biene",
+            "Victor",
+            "Renate",
+            "Michi"
+        ],
+        "07.02.2025": [
+            "Erna",
+            "Biene",
+            "Horst",
+            "Teddy"
+        ],
+        "14.02.2025": [
+            "Rene",
+            "Renate",
+            "Victor",
+            "Teddy"
+        ],
+        "21.02.2025": [
+            "Meiki",
+            "Erna",
+            "Biene",
+            "Rene"
+        ],
+        "28.02.2025": [
+            "Renate",
+            "Erna",
+            "Michi",
+            "Horst"
+        ],
+        "07.03.2025": [
+            "Meiki",
+            "Michi",
+            "Teddy",
+            "Horst"
+        ],
+        "14.03.2025": [
+            "Victor",
+            "Meiki",
+            "Rene",
+            "Biene"
+        ],
+        "21.03.2025": [
+            "Erna",
+            "Biene",
+            "Michi",
+            "Rene"
+        ],
+        "28.03.2025": [
+            "Victor",
+            "Renate",
+            "Teddy",
+            "Erna"
+        ],
+        "04.04.2025": [
+            "Horst",
+            "Meiki",
+            "Biene",
+            "Erna"
+        ],
+        "11.04.2025": [
+            "Victor",
+            "Renate",
+            "Horst",
+            "Meiki"
+        ],
+        "18.04.2025": [
+            "Teddy",
+            "Rene",
+            "Michi",
+            "Meiki"
+        ],
+        "25.04.2025": [
+            "Victor",
+            "Renate",
+            "Michi",
+            "Biene"
+        ]
+    }
+}

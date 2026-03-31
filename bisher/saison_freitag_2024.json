@@ -1,0 +1,34 @@
+{
+    "jahr": 2024,
+    "gruppe": "Freitag",
+    "start_date": "2024-10-04",
+    "end_date": "2025-04-25",
+    "players": [
+        {
+            "id": "rene",
+            "dummyname": "Rene",
+            "nicht_verfuegbare_termine": []
+        },
+        {
+            "id": "horst",
+            "dummyname": "Horst",
+            "nicht_verfuegbare_termine": []
+        },
+        {
+            "id": "victor",
+            "dummyname": "Victor",
+            "nicht_verfuegbare_termine": []
+        },
+        {
+            "id": "teddy",
+            "dummyname": "Teddy",
+            "nicht_verfuegbare_termine": []
+        },
+        {
+            "id": "bine",
+            "dummyname": "Bine",
+            "nicht_verfuegbare_termine": []
+        }
+    ],
+    "verteilung": {}
+}

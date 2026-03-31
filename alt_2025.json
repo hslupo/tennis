@@ -1,0 +1,91 @@
+{
+  "jahr": 2025,
+  "start_date": "2025-09-15",
+  "end_date": "2026-04-26",
+  "groups": [
+    {
+      "wochentag": "Dienstag",
+      "platz": "",
+      "startzeit": "18:00",
+      "endzeit": "20:00",
+      "players": {
+        "erna": {
+          "nicht_moeglich": []
+        },
+        "horstS": {
+          "nicht_moeglich": []
+        },
+        "meiki": {
+          "nicht_moeglich": []
+        },
+        "michi": {
+          "nicht_moeglich": []
+        }
+      },
+      "verteilung": {}
+    },
+    {
+      "wochentag": "Montag",
+      "platz": "3",
+      "startzeit": "18:00",
+      "endzeit": "20:00",
+      "players": {
+        "erna": {
+          "nicht_moeglich": []
+        },
+        "horstS": {
+          "nicht_moeglich": []
+        },
+        "meiki": {
+          "nicht_moeglich": []
+        },
+        "teddy": {
+          "nicht_moeglich": []
+        }
+      },
+      "verteilung": {}
+    },
+    {
+      "wochentag": "Montag",
+      "platz": "",
+      "startzeit": "18:00",
+      "endzeit": "20:00",
+      "players": {
+        "erna": {
+          "nicht_moeglich": []
+        },
+        "horstS": {
+          "nicht_moeglich": []
+        },
+        "meiki": {
+          "nicht_moeglich": []
+        },
+        "michi": {
+          "nicht_moeglich": []
+        }
+      },
+      "verteilung": {}
+    },
+    {
+      "wochentag": "Dienstag",
+      "platz": "",
+      "startzeit": "18:00",
+      "endzeit": "20:00",
+      "players": {
+        "erna": {
+          "nicht_moeglich": []
+        },
+        "horstS": {
+          "nicht_moeglich": []
+        },
+        "meiki": {
+          "nicht_moeglich": []
+        },
+        "michi": {
+          "nicht_moeglich": []
+        }
+      },
+      "verteilung": {}
+    }
+  ]
+}

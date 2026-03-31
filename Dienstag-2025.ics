@@ -1,0 +1,293 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//TennisPlanner//DE
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:20250916T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20250916T100000
+DTEND;TZID=Europe/Berlin:20250916T120000
+SUMMARY:Tennis: Schmidt, Karin, Schwede, Hartmut
+DESCRIPTION:Spieler: Schmidt, Karin, Schwede, Hartmut\nErsatz: Mani
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20250923T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20250923T100000
+DTEND;TZID=Europe/Berlin:20250923T120000
+SUMMARY:Tennis: Schmidt, Karin, Schwede, Hartmut
+DESCRIPTION:Spieler: Schmidt, Karin, Schwede, Hartmut\nErsatz: Mani, Göhlig
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20250930T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20250930T100000
+DTEND;TZID=Europe/Berlin:20250930T120000
+SUMMARY:Tennis: Göhlig, Schmidt, Schwede, Hartmut
+DESCRIPTION:Spieler: Göhlig, Schmidt, Schwede, Hartmut\nErsatz: Mani, Karin
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251007T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251007T100000
+DTEND;TZID=Europe/Berlin:20251007T120000
+SUMMARY:Tennis: Göhlig, Schmidt, Karin, Hartmut
+DESCRIPTION:Spieler: Göhlig, Schmidt, Karin, Hartmut\nErsatz: Mani, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251014T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251014T100000
+DTEND;TZID=Europe/Berlin:20251014T120000
+SUMMARY:Tennis: Göhlig, Karin, Schwede, Hartmut
+DESCRIPTION:Spieler: Göhlig, Karin, Schwede, Hartmut\nErsatz: Mani, Schmidt
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251021T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251021T100000
+DTEND;TZID=Europe/Berlin:20251021T120000
+SUMMARY:Tennis: Mani, Schmidt, Karin, Schwede
+DESCRIPTION:Spieler: Mani, Schmidt, Karin, Schwede\nErsatz: Göhlig, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251028T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251028T100000
+DTEND;TZID=Europe/Berlin:20251028T120000
+SUMMARY:Tennis: Mani, Göhlig, Schwede, Hartmut
+DESCRIPTION:Spieler: Mani, Göhlig, Schwede, Hartmut\nErsatz: Schmidt, Karin
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251104T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251104T100000
+DTEND;TZID=Europe/Berlin:20251104T120000
+SUMMARY:Tennis: Mani, Göhlig, Karin, Hartmut
+DESCRIPTION:Spieler: Mani, Göhlig, Karin, Hartmut\nErsatz: Schmidt, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251111T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251111T100000
+DTEND;TZID=Europe/Berlin:20251111T120000
+SUMMARY:Tennis: Göhlig, Schmidt, Karin, Hartmut
+DESCRIPTION:Spieler: Göhlig, Schmidt, Karin, Hartmut\nErsatz: Mani, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251118T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251118T100000
+DTEND;TZID=Europe/Berlin:20251118T120000
+SUMMARY:Tennis: Mani, Göhlig, Schmidt, Schwede
+DESCRIPTION:Spieler: Mani, Göhlig, Schmidt, Schwede\nErsatz: Karin, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251125T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251125T100000
+DTEND;TZID=Europe/Berlin:20251125T120000
+SUMMARY:Tennis: Karin, Schwede, Hartmut, Jürgen
+DESCRIPTION:Spieler: Karin, Schwede, Hartmut, Jürgen\nErsatz: Göhlig, Schmidt
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251202T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251202T100000
+DTEND;TZID=Europe/Berlin:20251202T120000
+SUMMARY:Tennis: Mani, Göhlig, Schmidt, Karin
+DESCRIPTION:Spieler: Mani, Göhlig, Schmidt, Karin\nErsatz: Schwede, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251209T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251209T100000
+DTEND;TZID=Europe/Berlin:20251209T120000
+SUMMARY:Tennis: Mani, Göhlig, Schwede, Hartmut
+DESCRIPTION:Spieler: Mani, Göhlig, Schwede, Hartmut\nErsatz: Schmidt, Karin
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251216T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251216T100000
+DTEND;TZID=Europe/Berlin:20251216T120000
+SUMMARY:Tennis: Mani, Göhlig, Schmidt, Karin
+DESCRIPTION:Spieler: Mani, Göhlig, Schmidt, Karin\nErsatz: Schwede, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251223T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251223T100000
+DTEND;TZID=Europe/Berlin:20251223T120000
+SUMMARY:Tennis: Schmidt, Karin, Schwede, Hartmut
+DESCRIPTION:Spieler: Schmidt, Karin, Schwede, Hartmut\nErsatz: Mani, Göhlig
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20251230T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20251230T100000
+DTEND;TZID=Europe/Berlin:20251230T120000
+SUMMARY:Tennis: Mani, Göhlig, Schmidt, Hartmut
+DESCRIPTION:Spieler: Mani, Göhlig, Schmidt, Hartmut\nErsatz: Karin, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260106T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260106T100000
+DTEND;TZID=Europe/Berlin:20260106T120000
+SUMMARY:Tennis: Schmidt, Karin, Schwede, Hartmut
+DESCRIPTION:Spieler: Schmidt, Karin, Schwede, Hartmut\nErsatz: Mani, Göhlig
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260113T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260113T100000
+DTEND;TZID=Europe/Berlin:20260113T120000
+SUMMARY:Tennis: Mani, Göhlig, Karin, Schwede
+DESCRIPTION:Spieler: Mani, Göhlig, Karin, Schwede\nErsatz: Schmidt, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260120T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260120T100000
+DTEND;TZID=Europe/Berlin:20260120T120000
+SUMMARY:Tennis: Mani, Karin, Schwede, Jürgen
+DESCRIPTION:Spieler: Mani, Karin, Schwede, Jürgen\nErsatz: Göhlig, Schmidt, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260127T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260127T100000
+DTEND;TZID=Europe/Berlin:20260127T120000
+SUMMARY:Tennis: Göhlig, Schmidt, Hartmut, Jürgen
+DESCRIPTION:Spieler: Göhlig, Schmidt, Hartmut, Jürgen\nErsatz: Mani, Karin, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260203T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260203T100000
+DTEND;TZID=Europe/Berlin:20260203T120000
+SUMMARY:Tennis: Mani, Schmidt, Schwede, Jürgen
+DESCRIPTION:Spieler: Mani, Schmidt, Schwede, Jürgen\nErsatz: Göhlig, Karin, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260210T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260210T100000
+DTEND;TZID=Europe/Berlin:20260210T120000
+SUMMARY:Tennis: Mani, Karin, Schwede, Hartmut
+DESCRIPTION:Spieler: Mani, Karin, Schwede, Hartmut\nErsatz: Göhlig, Schmidt
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260217T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260217T100000
+DTEND;TZID=Europe/Berlin:20260217T120000
+SUMMARY:Tennis: Göhlig, Schmidt, Schwede, Jürgen
+DESCRIPTION:Spieler: Göhlig, Schmidt, Schwede, Jürgen\nErsatz: Mani, Karin, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260224T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260224T100000
+DTEND;TZID=Europe/Berlin:20260224T120000
+SUMMARY:Tennis: Mani, Karin, Hartmut, Jürgen
+DESCRIPTION:Spieler: Mani, Karin, Hartmut, Jürgen\nErsatz: Göhlig, Schmidt, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260303T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260303T100000
+DTEND;TZID=Europe/Berlin:20260303T120000
+SUMMARY:Tennis: Mani, Göhlig, Karin, Jürgen
+DESCRIPTION:Spieler: Mani, Göhlig, Karin, Jürgen\nErsatz: Schmidt, Schwede, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260310T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260310T100000
+DTEND;TZID=Europe/Berlin:20260310T120000
+SUMMARY:Tennis: Mani, Schmidt, Schwede, Jürgen
+DESCRIPTION:Spieler: Mani, Schmidt, Schwede, Jürgen\nErsatz: Göhlig, Karin, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260317T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260317T100000
+DTEND;TZID=Europe/Berlin:20260317T120000
+SUMMARY:Tennis: Göhlig, Schmidt, Hartmut, Jürgen
+DESCRIPTION:Spieler: Göhlig, Schmidt, Hartmut, Jürgen\nErsatz: Mani, Karin, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260324T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260324T100000
+DTEND;TZID=Europe/Berlin:20260324T120000
+SUMMARY:Tennis: Mani, Göhlig, Karin, Jürgen
+DESCRIPTION:Spieler: Mani, Göhlig, Karin, Jürgen\nErsatz: Schmidt, Schwede, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260331T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260331T100000
+DTEND;TZID=Europe/Berlin:20260331T120000
+SUMMARY:Tennis: Mani, Göhlig, Schwede, Jürgen
+DESCRIPTION:Spieler: Mani, Göhlig, Schwede, Jürgen\nErsatz: Schmidt, Karin, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260407T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260407T100000
+DTEND;TZID=Europe/Berlin:20260407T120000
+SUMMARY:Tennis: Mani, Göhlig, Schmidt, Hartmut
+DESCRIPTION:Spieler: Mani, Göhlig, Schmidt, Hartmut\nErsatz: Karin, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260414T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260414T100000
+DTEND;TZID=Europe/Berlin:20260414T120000
+SUMMARY:Tennis: Schmidt, Karin, Schwede, Jürgen
+DESCRIPTION:Spieler: Schmidt, Karin, Schwede, Jürgen\nErsatz: Göhlig, Hartmut
+LOCATION:Tennisplatz
+END:VEVENT
+BEGIN:VEVENT
+UID:20260421T100000-tennis-dienstag
+DTSTAMP:20240521T120000Z
+DTSTART;TZID=Europe/Berlin:20260421T100000
+DTEND;TZID=Europe/Berlin:20260421T120000
+SUMMARY:Tennis: Mani, Karin, Hartmut, Jürgen
+DESCRIPTION:Spieler: Mani, Karin, Hartmut, Jürgen\nErsatz: Göhlig, Schmidt, Schwede
+LOCATION:Tennisplatz
+END:VEVENT
+END:VCALENDAR
