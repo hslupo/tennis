@@ -1,0 +1,20 @@
+changelog:
+  categories:
+    - title: "Neue Funktionen"
+      labels:
+        - "feature"
+        - "enhancement"
+    - title: "Fehlerbehebungen"
+      labels:
+        - "bug"
+        - "fix"
+    - title: "Wartung"
+      labels:
+        - "chore"
+        - "refactor"
+        - "docs"
+  exclude:
+    labels:
+      - "skip-changelog"
+    authors:
+      - "dependabot"
