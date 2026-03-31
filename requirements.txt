@@ -1,0 +1,8 @@
+openpyxl
+ics
+pytz
+tkcalendar
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+icalendar
