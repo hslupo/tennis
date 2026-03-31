@@ -91,7 +91,9 @@ class CalendarGui(tk.Tk):
                 self.show_text('Keine Kalender gefunden.')
                 return
 
-            values = [f"{cal.get('summary', 'Ohne Namen')} ({cal.get('id', '-')})" for cal in self.calendars]
+            # Alte Variante mit Name + ID (auf Wunsch auskommentiert erhalten):
+            # values = [f"{cal.get('summary', 'Ohne Namen')} ({cal.get('id', '-')})" for cal in self.calendars]
+            values = [cal.get('summary', 'Ohne Namen') for cal in self.calendars]
             self.calendar_combo['values'] = values
             self.calendar_combo.current(0)
             self.show_events_for_selection(0)
