@@ -1,8 +1,9 @@
-openpyxl
-ics
-pytz
-tkcalendar
-google-auth-oauthlib
-google-auth-httplib2
-google-api-python-client
-icalendar
+google-api-python-client==2.183.0
+google-auth==2.40.3
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.2
+icalendar==6.3.1
+ics==0.7.2
+openpyxl==3.1.5
+pytz==2025.2
+tkcalendar==1.6.1
