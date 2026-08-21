@@ -1,2 +1,0 @@
-Da müssen wir einen Schritt zurück:
-Beim Speichern und Laden soll das Verzeichnis der App genutzt werden ohne das aktuelle Verzeichnis zu ändern. Der Dateiname soll für das Speichern automatisch erstellt werden 'YY-' vom Startjahr + Wochentag. Beim Laden sollen alle Dateien zu Auswahl gezeigt werden, die dem Datenformat entsprechen. Das Fenster vom rundenspieler soll in der Titelleiste auch die Fenstergeometry anzeigen, damit ich das händisch anpassen kann. Bitte beide Dateien komplett ausgeben.

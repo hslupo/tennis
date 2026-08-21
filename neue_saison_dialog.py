@@ -3,7 +3,6 @@ from tkinter import messagebox
 import datetime
 import json
 from pathlib import Path
-from saison import Saison
 
 def letzter_montag_september(jahr: int) -> datetime.date:
     datum = datetime.date(jahr, 9, 30)
