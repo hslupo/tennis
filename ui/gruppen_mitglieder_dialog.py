@@ -1,21 +1,23 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QDialog, QListWidget, QListWidgetItem, QPushButton, QVBoxLayout, QHBoxLayout,
-    QLabel, QLineEdit, QMessageBox, QInputDialog,
+    QLabel, QLineEdit, QMessageBox, QInputDialog, QAbstractItemView,
 )
 
 import legacy_adapter
 
 
 class SpielerAuswahlDialog(QDialog):
-    """Durchsuchbare Auswahlliste, z.B. um einen Spieler zu einer Gruppe hinzuzufügen."""
+    """Durchsuchbare Mehrfachauswahl, z.B. um mehrere Spieler auf einmal zu einer
+    Gruppe hinzuzufügen (Strg/Shift+Klick oder Ziehen für mehrere Einträge)."""
 
     def __init__(self, parent, titel: str, kandidaten: list[tuple[int, str]]):
         super().__init__(parent)
         self.setWindowTitle(titel)
         self.resize(300, 400)
         self._alle_kandidaten = kandidaten
-        self.gewaehlte_id = None
+        self._ausgewaehlte_ids: set[int] = set()
+        self.gewaehlte_ids: list[int] = []
 
         layout = QVBoxLayout(self)
         such_row = QHBoxLayout()
@@ -25,7 +27,11 @@ class SpielerAuswahlDialog(QDialog):
         such_row.addWidget(self.such_edit)
         layout.addLayout(such_row)
 
+        layout.addWidget(QLabel("Mehrfachauswahl möglich (Strg/Shift+Klick)."))
+
         self.listbox = QListWidget()
+        self.listbox.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.listbox.itemSelectionChanged.connect(self._auswahl_gemerkt)
         self.listbox.itemDoubleClicked.connect(lambda _: self._ok())
         layout.addWidget(self.listbox)
 
@@ -41,7 +47,15 @@ class SpielerAuswahlDialog(QDialog):
         self._filtern("")
         self.such_edit.setFocus()
 
+    def _auswahl_gemerkt(self):
+        """Merkt sich die Auswahl auch über Suchtext-Änderungen (Listeneinträge werden
+        dabei neu aufgebaut) hinweg."""
+        sichtbare_ids = {self.listbox.item(i).data(Qt.UserRole) for i in range(self.listbox.count())}
+        neu_ausgewaehlt = {item.data(Qt.UserRole) for item in self.listbox.selectedItems()}
+        self._ausgewaehlte_ids = (self._ausgewaehlte_ids - sichtbare_ids) | neu_ausgewaehlt
+
     def _filtern(self, text: str):
+        self.listbox.blockSignals(True)
         self.listbox.clear()
         suche = text.strip().lower()
         for pid, name in self._alle_kandidaten:
@@ -50,13 +64,13 @@ class SpielerAuswahlDialog(QDialog):
             item = QListWidgetItem(name)
             item.setData(Qt.UserRole, pid)
             self.listbox.addItem(item)
-        if self.listbox.count():
-            self.listbox.setCurrentRow(0)
+            if pid in self._ausgewaehlte_ids:
+                item.setSelected(True)
+        self.listbox.blockSignals(False)
 
     def _ok(self):
-        item = self.listbox.currentItem()
-        if item is not None:
-            self.gewaehlte_id = item.data(Qt.UserRole)
+        self._auswahl_gemerkt()
+        self.gewaehlte_ids = list(self._ausgewaehlte_ids)
         self.accept()
 
 
@@ -116,15 +130,15 @@ class GruppenMitgliederDialog(QDialog):
             return
 
         dlg = SpielerAuswahlDialog(self, "Spieler hinzufügen", kandidaten)
-        if dlg.exec() != QDialog.Accepted or dlg.gewaehlte_id is None:
+        if dlg.exec() != QDialog.Accepted or not dlg.gewaehlte_ids:
             return
 
-        pid = dlg.gewaehlte_id
-        self.gruppe["players"][pid] = {
-            "nicht_moeglich": [],
-            "anzeige_name": self.spieler_namen.get(pid, str(pid)),
-            "spitzname_override": None,
-        }
+        for pid in dlg.gewaehlte_ids:
+            self.gruppe["players"][pid] = {
+                "nicht_moeglich": [],
+                "anzeige_name": self.spieler_namen.get(pid, str(pid)),
+                "spitzname_override": None,
+            }
         self._speichern_und_neu_laden()
 
     def _loeschen(self):

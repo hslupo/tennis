@@ -28,7 +28,8 @@ CREATE TABLE spieler (
     name TEXT NOT NULL DEFAULT '',
     spitzname TEXT NOT NULL,
     telefon TEXT NOT NULL DEFAULT '',
-    mobil TEXT NOT NULL DEFAULT ''
+    mobil TEXT NOT NULL DEFAULT '',
+    email TEXT NOT NULL DEFAULT ''
 );
 
 -- spitzname_override: falls gesetzt, gilt dieser Anzeigename statt spieler.spitzname

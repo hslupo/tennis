@@ -29,6 +29,9 @@ class SpielerBearbeitenDialog(QDialog):
         self.mobil_edit = QLineEdit(spieler["mobil"])
         form.addRow("Mobil:", self.mobil_edit)
 
+        self.email_edit = QLineEdit(spieler.get("email", ""))
+        form.addRow("E-Mail:", self.email_edit)
+
         btn_speichern = QPushButton("Speichern")
         btn_speichern.clicked.connect(self._speichern)
         layout.addWidget(btn_speichern)
@@ -44,6 +47,7 @@ class SpielerBearbeitenDialog(QDialog):
             spitzname=spitzname,
             telefon=self.telefon_edit.text().strip(),
             mobil=self.mobil_edit.text().strip(),
+            email=self.email_edit.text().strip(),
         )
         self.accept()
 

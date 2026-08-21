@@ -180,12 +180,12 @@ def spieler_alle() -> list[dict]:
     return [dict(row) for row in _spieler_repo.alle()]
 
 
-def spieler_erstellen(name: str = "", spitzname: str = "", telefon: str = "", mobil: str = "") -> int:
-    return _spieler_repo.erstellen(name, spitzname, telefon, mobil)
+def spieler_erstellen(name: str = "", spitzname: str = "", telefon: str = "", mobil: str = "", email: str = "") -> int:
+    return _spieler_repo.erstellen(name, spitzname, telefon, mobil, email)
 
 
-def spieler_aktualisieren(spieler_id: int, name: str, spitzname: str, telefon: str, mobil: str) -> None:
-    _spieler_repo.aktualisieren(spieler_id, name, spitzname, telefon, mobil)
+def spieler_aktualisieren(spieler_id: int, name: str, spitzname: str, telefon: str, mobil: str, email: str = "") -> None:
+    _spieler_repo.aktualisieren(spieler_id, name, spitzname, telefon, mobil, email)
 
 
 def spieler_loeschen(spieler_id: int) -> None:

@@ -30,11 +30,13 @@ class RepositoryTest(unittest.TestCase):
         sid = self.spieler_repo.erstellen("Erna Muster", "Erna", "0123", "0456")
         row = self.spieler_repo.get(sid)
         self.assertEqual(row["name"], "Erna Muster")
+        self.assertEqual(row["email"], "")
 
-        self.spieler_repo.aktualisieren(sid, "Erna Neu", "ErnaN", "999", "888")
+        self.spieler_repo.aktualisieren(sid, "Erna Neu", "ErnaN", "999", "888", "erna@example.com")
         row = self.spieler_repo.get(sid)
         self.assertEqual(row["name"], "Erna Neu")
         self.assertEqual(row["spitzname"], "ErnaN")
+        self.assertEqual(row["email"], "erna@example.com")
 
         self.spieler_repo.loeschen(sid)
         self.assertIsNone(self.spieler_repo.get(sid))

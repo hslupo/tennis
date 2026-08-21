@@ -69,9 +69,11 @@ def migrate_spieler(conn, spieler_json_path: Path) -> dict[str, int]:
             voller_name = mobil
             mobil = ""
 
+        email = eintrag.get("email", "")
+
         cur = conn.execute(
-            "INSERT INTO spieler (name, spitzname, telefon, mobil) VALUES (?, ?, ?, ?)",
-            (voller_name, spitzname, telefon, mobil),
+            "INSERT INTO spieler (name, spitzname, telefon, mobil, email) VALUES (?, ?, ?, ?, ?)",
+            (voller_name, spitzname, telefon, mobil, email),
         )
         mapping[eintrag["id"]] = cur.lastrowid
     return mapping
@@ -82,7 +84,7 @@ def get_or_create_spieler_id(conn, spieler_map: dict[str, int], alt_id: str) -> 
         return spieler_map[alt_id]
     print(f"  WARNUNG: Spieler-ID '{alt_id}' fehlt in spieler.json, lege Platzhalter-Datensatz an")
     cur = conn.execute(
-        "INSERT INTO spieler (name, spitzname, telefon, mobil) VALUES (?, ?, '', '')",
+        "INSERT INTO spieler (name, spitzname, telefon, mobil, email) VALUES (?, ?, '', '', '')",
         (alt_id, alt_id),
     )
     spieler_map[alt_id] = cur.lastrowid
