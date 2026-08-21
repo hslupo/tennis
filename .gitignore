@@ -23,3 +23,6 @@ token.json
 # Test and local outputs
 .pytest_cache/
 *.log
+
+# Lokaler UI-Zustand (z.B. zuletzt angezeigte Gruppe je Saison), kein Domänendatum
+ui_state.json

@@ -1,13 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
 import datetime
-import json
-from pathlib import Path
 
+import legacy_adapter
 from tennisspieler import Tennisspieler
 from neue_saison_dialog import NeueSaisonDialog
 from neue_gruppe_dialog import NeueGruppeDialog
-from utils import ermittle_state
+from utils import ermittle_state, generiere_termine
 
 WOCHENTAGE = [
     "Montag", "Dienstag", "Mittwoch",
@@ -15,27 +14,11 @@ WOCHENTAGE = [
 ]
 
 
-def generiere_termine(start_iso: str, end_iso: str, wochentag_name: str) -> list[str]:
-    """Alle Termine zwischen Start/Ende, die auf den Wochentag fallen (TT.MM.JJJJ)."""
-    WTAG = {"Montag": 0, "Dienstag": 1, "Mittwoch": 2,
-            "Donnerstag": 3, "Freitag": 4, "Samstag": 5, "Sonntag": 6}
-    start_d = datetime.date.fromisoformat(start_iso)
-    end_d = datetime.date.fromisoformat(end_iso)
-    tag_idx = WTAG[wochentag_name]
-    diff = (tag_idx - start_d.weekday()) % 7
-    cur = start_d + datetime.timedelta(days=diff)
-    out = []
-    while cur <= end_d:
-        out.append(cur.strftime("%d.%m.%Y"))
-        cur += datetime.timedelta(days=7)
-    return out
-
-
 class TennisRundenApp:
     def __init__(self, root):
         self.root = root
         self.jahr = datetime.date.today().year
-        self.spieler_namen = self.lade_spieler_namen()
+        self.spieler_namen = legacy_adapter.lade_spieler_namen()
 
         container = tk.Frame(root)
         container.pack(fill="both", expand=True)
@@ -53,14 +36,6 @@ class TennisRundenApp:
 
         # Inhalt anzeigen
         self.refresh()
-
-    def lade_spieler_namen(self) -> dict:
-        """Lädt spieler.json und gibt dict id->name zurück."""
-        try:
-            data = json.loads(Path("spieler.json").read_text(encoding="utf-8"))
-            return {sp["id"]: sp["name"] for sp in data}
-        except Exception:
-            return {}
 
     def baue_menue(self):
         tk.Label(self.menu_frame, text="Verwalten", bg="#f0f0f0",
@@ -123,6 +98,10 @@ class TennisRundenApp:
     def oeffne_spielerliste(self):
         top = tk.Toplevel(self.root)
         Tennisspieler(top)
+        top.protocol("WM_DELETE_WINDOW", lambda: (self._spieler_namen_neu_laden(), top.destroy()))
+
+    def _spieler_namen_neu_laden(self):
+        self.spieler_namen = legacy_adapter.lade_spieler_namen()
 
     def neue_gruppe(self):
         auswahl = self.gruppen_listbox.curselection()
@@ -179,19 +158,23 @@ class TennisRundenApp:
         self.saison = saison
         self.wochentag_key = wochentag_key
 
-        # last_group speichern
+        # last_group merken
         if saison.get("last_group") != wochentag_key:
             saison["last_group"] = wochentag_key
-            Path(f"{self.jahr}.json").write_text(json.dumps(saison, indent=2, ensure_ascii=False), encoding="utf-8")
+            legacy_adapter.set_last_group(self.jahr, wochentag_key)
 
-        # Spieler eintragen mit Namen
-        for pid in gruppe["players"].keys():
-            name = self.spieler_namen.get(pid, pid)
-            self.spieler_listbox.insert(tk.END, f"{name} ({pid})")
+        # Spieler eintragen, sortiert nach effektivem Anzeigenamen; Reihenfolge merken
+        # für die Zuordnung Listbox-Index -> Spieler-ID (kein Text-Parsing mehr nötig).
+        self._gruppen_spieler_ids = sorted(
+            gruppe["players"].keys(),
+            key=lambda pid: gruppe["players"][pid]["anzeige_name"].lower(),
+        )
+        for pid in self._gruppen_spieler_ids:
+            self.spieler_listbox.insert(tk.END, gruppe["players"][pid]["anzeige_name"])
 
         self.spieler_listbox.bind("<<ListboxSelect>>", self.spieler_gewaehlt)
 
-        if gruppe["players"]:
+        if self._gruppen_spieler_ids:
             self.spieler_listbox.selection_set(0)
             self.spieler_gewaehlt()
 
@@ -207,8 +190,7 @@ class TennisRundenApp:
         auswahl = self.spieler_listbox.curselection()
         if not auswahl:
             return
-        eintrag = self.spieler_listbox.get(auswahl[0])
-        pid = eintrag.split("(")[-1].rstrip(")")
+        pid = self._gruppen_spieler_ids[auswahl[0]]
 
         for w in self.termine_frame.winfo_children():
             w.destroy()
@@ -246,19 +228,15 @@ class TennisRundenApp:
         else:
             if termin in nm:
                 nm.remove(termin)
-        Path(f"{self.jahr}.json").write_text(json.dumps(self.saison, indent=2, ensure_ascii=False), encoding="utf-8")
-
+        legacy_adapter.speichere_saison(self.saison)
 
     def spieler_verwalten(self):
         from spieler_verwalten_dialog import SpielerVerwaltenDialog
         top = tk.Toplevel(self.root)
 
         def on_change():
-            # JSON neu laden und Gruppe anzeigen
-            datei = Path(f"{self.jahr}.json")
-            if datei.exists():
-                self.saison = json.loads(datei.read_text(encoding="utf-8"))
-                self.zeige_gruppe(self.wochentag_key, self.saison)
+            self.saison = legacy_adapter.lade_saison(self.jahr)
+            self.zeige_gruppe(self.wochentag_key, self.saison)
 
         SpielerVerwaltenDialog(top, self.jahr, self.wochentag_key, self.saison, self.spieler_namen, on_change)
 
@@ -268,7 +246,8 @@ class TennisRundenApp:
     def auswertung_anzeigen(self):
         from auswertung import kopiere_auswertung
         gruppe = self.saison["groups"][self.wochentag_key]
-        kopiere_auswertung(self.root, self.saison, gruppe, self.spieler_namen)
+        anzeige_namen = {pid: eintrag["anzeige_name"] for pid, eintrag in gruppe["players"].items()}
+        kopiere_auswertung(self.root, self.saison, gruppe, anzeige_namen)
 
 
 if __name__ == "__main__":

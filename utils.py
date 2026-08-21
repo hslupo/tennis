@@ -1,22 +1,18 @@
-import json
-from pathlib import Path
 import datetime
-from collections import defaultdict
-from typing import Dict, List, Optional, Tuple
+from typing import List
+
+
 def ermittle_state(jahr: int):
     """
     Prüft den Zustand für ein Jahr:
-    - NO_SAISON: keine Datei vorhanden
+    - NO_SAISON: keine Saison in der Datenbank vorhanden
     - NO_GROUP: Saison existiert, aber keine Gruppen
     - SHOW_GROUP: es gibt Gruppen
     """
-    datei = Path(f"{jahr}.json")
-    if not datei.exists():
-        return "NO_SAISON", None
+    import legacy_adapter
 
-    try:
-        saison = json.loads(datei.read_text(encoding="utf-8"))
-    except Exception:
+    saison = legacy_adapter.lade_saison(jahr)
+    if saison is None:
         return "NO_SAISON", None
 
     if not saison.get("groups"):

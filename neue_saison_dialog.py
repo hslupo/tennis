@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 import datetime
-import json
-from pathlib import Path
+
+import legacy_adapter
 
 def letzter_montag_september(jahr: int) -> datetime.date:
     datum = datetime.date(jahr, 9, 30)
@@ -46,14 +46,16 @@ class NeueSaisonDialog:
             self.end_var.set(str(self.end_date))
 
     def speichern(self):
+        # Hinweis: speichere_saison ergänzt/aktualisiert nur die übergebenen Gruppen,
+        # bestehende Gruppen einer Saison werden dadurch nie gelöscht.
         s = {
             "jahr": self.jahr,
             "start_date": self.start_date.isoformat(),
             "end_date": self.end_date.isoformat(),
             "last_group": "",
-            "groups": {}
+            "groups": {},
         }
-        Path(f"{self.jahr}.json").write_text(json.dumps(s, indent=2, ensure_ascii=False), encoding="utf-8")
+        legacy_adapter.speichere_saison(s)
         messagebox.showinfo("Gespeichert", f"Saison {self.jahr} gespeichert.")
 
         # Fenster schließen

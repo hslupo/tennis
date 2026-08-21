@@ -1,7 +1,7 @@
 import tkinter as tk
-from tkinter import messagebox
-import json
-from pathlib import Path
+from tkinter import messagebox, simpledialog
+
+import legacy_adapter
 
 
 class SpielerVerwaltenDialog:
@@ -21,7 +21,7 @@ class SpielerVerwaltenDialog:
         # Liste aller Spieler laden (nach Namen sortiert)
         self.alle_spieler = sorted(
             spieler_namen.keys(),
-            key=lambda pid: self.spieler_namen.get(pid, pid).lower()
+            key=lambda pid: self.spieler_namen.get(pid, str(pid)).lower()
         )
 
         # UI aufbauen
@@ -30,6 +30,11 @@ class SpielerVerwaltenDialog:
 
         self.spieler_listbox = tk.Listbox(root, width=40, height=15)
         self.spieler_listbox.pack(padx=10, pady=10, fill="both", expand=True)
+        self.spieler_listbox.bind("<Double-Button-1>", self.spitzname_anpassen)
+
+        tk.Label(root, text="Doppelklick auf einen Spieler, um seinen Spitznamen\n"
+                             "nur für diese Gruppe anzupassen.", fg="#555",
+                 justify="left").pack(anchor="w", padx=10)
 
         self.refresh_list()
 
@@ -42,9 +47,12 @@ class SpielerVerwaltenDialog:
     def refresh_list(self):
         """Listbox mit Spielern der Gruppe füllen"""
         self.spieler_listbox.delete(0, tk.END)
-        for pid in self.gruppe["players"].keys():
-            name = self.spieler_namen.get(pid, pid)
-            self.spieler_listbox.insert(tk.END, f"{name} ({pid})")
+        self._gruppen_spieler_ids = sorted(
+            self.gruppe["players"].keys(),
+            key=lambda pid: self.gruppe["players"][pid]["anzeige_name"].lower(),
+        )
+        for pid in self._gruppen_spieler_ids:
+            self.spieler_listbox.insert(tk.END, self.gruppe["players"][pid]["anzeige_name"])
 
     def hinzufuegen(self):
         """Spieler aus Gesamtliste auswählen und hinzufügen"""
@@ -61,10 +69,13 @@ class SpielerVerwaltenDialog:
             messagebox.showwarning("Hinweis", "Dieser Spieler ist bereits in der Gruppe.")
             return
 
-        # Spieler hinzufügen
-        self.gruppe["players"][auswahl] = {"nicht_moeglich": []}
-        self.speichern()
-        self.refresh_list()
+        # Spieler hinzufügen (anzeige_name als Platzhalter, wird beim Neuladen aus der DB ersetzt)
+        self.gruppe["players"][auswahl] = {
+            "nicht_moeglich": [],
+            "anzeige_name": self.spieler_namen.get(auswahl, str(auswahl)),
+            "spitzname_override": None,
+        }
+        self.speichern_und_neu_laden()
         self.callback()
 
     def loeschen(self):
@@ -74,19 +85,42 @@ class SpielerVerwaltenDialog:
             messagebox.showwarning("Hinweis", "Bitte einen Spieler auswählen.")
             return
 
-        eintrag = self.spieler_listbox.get(auswahl[0])
-        pid = eintrag.split("(")[-1].rstrip(")")
+        pid = self._gruppen_spieler_ids[auswahl[0]]
+        anzeige_name = self.gruppe["players"][pid]["anzeige_name"]
 
-        if messagebox.askyesno("Bestätigen", f"Soll Spieler {self.spieler_namen.get(pid, pid)} wirklich entfernt werden?"):
+        if messagebox.askyesno("Bestätigen", f"Soll Spieler {anzeige_name} wirklich entfernt werden?"):
             del self.gruppe["players"][pid]
-            self.speichern()
-            self.refresh_list()
+            self.speichern_und_neu_laden()
             self.callback()
 
-    def speichern(self):
-        """JSON-Datei der Saison neu speichern"""
-        datei = Path(f"{self.jahr}.json")
-        datei.write_text(json.dumps(self.saison, indent=2, ensure_ascii=False), encoding="utf-8")
+    def spitzname_anpassen(self, event=None):
+        """Spitzname nur für diese Gruppe überschreiben (z.B. zur Unterscheidung Gleichnamiger)."""
+        auswahl = self.spieler_listbox.curselection()
+        if not auswahl:
+            return
+        pid = self._gruppen_spieler_ids[auswahl[0]]
+        eintrag = self.gruppe["players"][pid]
+        global_spitzname = self.spieler_namen.get(pid, str(pid))
+
+        neuer_wert = simpledialog.askstring(
+            "Spitzname für diese Gruppe",
+            f"Anzeigename in dieser Gruppe (leer = Standard '{global_spitzname}'):",
+            initialvalue=eintrag.get("spitzname_override") or "",
+            parent=self.root,
+        )
+        if neuer_wert is None:
+            return  # abgebrochen
+
+        eintrag["spitzname_override"] = neuer_wert.strip() or None
+        self.speichern_und_neu_laden()
+        self.callback()
+
+    def speichern_und_neu_laden(self):
+        """Saison speichern und anschließend frisch aus der DB laden (u.a. für aktuelle anzeige_name-Werte)."""
+        legacy_adapter.speichere_saison(self.saison)
+        self.saison = legacy_adapter.lade_saison(self.jahr)
+        self.gruppe = self.saison["groups"][self.wochentag_key]
+        self.refresh_list()
 
     def auswahl_dialog(self, title, prompt, items):
         """Einfaches Auswahl-Dialogfenster"""
@@ -116,11 +150,11 @@ class SpielerVerwaltenDialog:
             sichtbare_items.clear()
 
             for item in items:
-                name = self.spieler_namen.get(item, item)
-                if suche and suche not in item.lower() and suche not in name.lower():
+                name = self.spieler_namen.get(item, str(item))
+                if suche and suche not in name.lower():
                     continue
                 sichtbare_items.append(item)
-                lb.insert(tk.END, f"{name} ({item})")
+                lb.insert(tk.END, name)
 
             if sichtbare_items:
                 lb.selection_set(0)

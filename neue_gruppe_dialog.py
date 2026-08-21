@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-import json
-from pathlib import Path
+
+import legacy_adapter
 
 
 class NeueGruppeDialog:
@@ -50,12 +50,10 @@ class NeueGruppeDialog:
             messagebox.showwarning("Fehler", "Bitte alle Felder ausfüllen.")
             return
 
-        datei = Path(f"{self.jahr}.json")
-        if not datei.exists():
-            messagebox.showerror("Fehler", f"Saison-Datei {self.jahr}.json nicht gefunden!")
+        saison = legacy_adapter.lade_saison(self.jahr)
+        if saison is None:
+            messagebox.showerror("Fehler", f"Saison {self.jahr} nicht gefunden!")
             return
-
-        saison = json.loads(datei.read_text(encoding="utf-8"))
 
         # Neue Gruppe einfügen oder überschreiben
         saison["groups"][self.wochentag] = {
@@ -70,7 +68,7 @@ class NeueGruppeDialog:
         # last_group auf diese setzen
         saison["last_group"] = self.wochentag
 
-        datei.write_text(json.dumps(saison, indent=2, ensure_ascii=False), encoding="utf-8")
+        legacy_adapter.speichere_saison(saison)
 
         messagebox.showinfo("Gespeichert", f"Gruppe {self.anzeige_wochentag} wurde gespeichert.")
         self.root.destroy()
