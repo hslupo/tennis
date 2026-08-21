@@ -14,85 +14,12 @@ Erwartete Formate:
 - spieler_namen : dict id->vollerName
 """
 
-import datetime
-import json
 from pathlib import Path
 import tkinter as tk
 from tkinter import messagebox, filedialog
-from typing import List, Dict
+from typing import Dict
 
-
-def generiere_termine(start_iso: str, end_iso: str, wochentag_name: str) -> List[str]:
-    """
-    Alle Termine zwischen start_iso und end_iso, die auf wochentag_name fallen.
-    Rückgabe: Liste von Strings im Format "TT.MM.JJJJ".
-    Erwartet start_iso/end_iso im ISO-Format "YYYY-MM-DD".
-    """
-    WTAG = {
-        "Montag": 0, "Dienstag": 1, "Mittwoch": 2,
-        "Donnerstag": 3, "Freitag": 4, "Samstag": 5, "Sonntag": 6
-    }
-    if wochentag_name not in WTAG:
-        return []
-
-    start_d = datetime.date.fromisoformat(start_iso)
-    end_d = datetime.date.fromisoformat(end_iso)
-    tag_idx = WTAG[wochentag_name]
-    diff = (tag_idx - start_d.weekday()) % 7
-    cur = start_d + datetime.timedelta(days=diff)
-
-    out: List[str] = []
-    while cur <= end_d:
-        out.append(cur.strftime("%d.%m.%Y"))
-        cur += datetime.timedelta(days=7)
-    return out
-
-
-def _erstelle_text(saison: Dict, gruppe: Dict, spieler_namen: Dict) -> str:
-    """
-    Baut den Auswertungstext als string auf.
-    Format:
-      Spieler → Nicht mögliche Termine
-      Name (id): TT.MM.JJJJ, ...
-      ...
-      (leerzeile)
-      Termine → Verfügbare Spieler
-      TT.MM.JJJJ: alle können
-      TT.MM.JJJJ: id1, id2
-    """
-    lines: List[str] = []
-    lines.append("Spieler → Nicht mögliche Termine")
-    # Spieler-Abschnitt
-    for pid, daten in gruppe.get("players", {}).items():
-        name = spieler_namen.get(pid, pid)
-        nm_list = daten.get("nicht_moeglich", []) or []
-        nm = ", ".join(nm_list)
-        lines.append(f"{name} ({pid}): {nm if nm else '—'}")
-
-    lines.append("")  # Leerzeile
-    lines.append("Termine → Verfügbare Spieler")
-
-    # Termine generieren
-    start = saison.get("start_date", "")
-    end = saison.get("end_date", "")
-    if not start or not end:
-        lines.append("Keine Saison-Daten (start/end) vorhanden.")
-        return "\n".join(lines)
-
-    termine = generiere_termine(start, end, gruppe.get("wochentag", ""))
-    alle_spieler = list(gruppe.get("players", {}).keys())
-
-    for t in termine:
-        available = [pid for pid, d in gruppe.get("players", {}).items() if t not in d.get("nicht_moeglich", [])]
-        if len(available) == 0:
-            # Keiner kann
-            lines.append(f"{t}: keiner kann")
-        elif len(available) == len(alle_spieler):
-            lines.append(f"{t}: alle können")
-        else:
-            lines.append(f"{t}: {', '.join(available)}")
-
-    return "\n".join(lines)
+from services.auswertung_service import erstelle_auswertungstext
 
 
 def kopiere_auswertung(root: tk.Tk, saison: Dict, gruppe: Dict, spieler_namen: Dict):
@@ -101,7 +28,7 @@ def kopiere_auswertung(root: tk.Tk, saison: Dict, gruppe: Dict, spieler_namen: D
     root: Haupt-Tkinter-Fenster (wird für Clipboard genutzt).
     """
     # Text erstellen
-    text = _erstelle_text(saison, gruppe, spieler_namen)
+    text = erstelle_auswertungstext(saison, gruppe, spieler_namen)
 
     # In Zwischenablage schreiben
     try:

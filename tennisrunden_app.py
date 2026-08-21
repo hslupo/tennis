@@ -6,7 +6,8 @@ import legacy_adapter
 from tennisspieler import Tennisspieler
 from neue_saison_dialog import NeueSaisonDialog
 from neue_gruppe_dialog import NeueGruppeDialog
-from utils import ermittle_state, generiere_termine
+from utils import ermittle_state
+from services.termine_service import generiere_termine
 
 WOCHENTAGE = [
     "Montag", "Dienstag", "Mittwoch",

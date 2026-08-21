@@ -27,7 +27,7 @@ from repository.saison_repository import SaisonRepository
 from repository.spieler_repository import SpielerRepository
 from repository.termin_repository import TerminRepository
 from repository.verteilung_repository import VerteilungRepository
-from utils import generiere_termine
+from services.termine_service import generiere_termine
 
 WOCHENTAGE_UMKEHR = {wert: key for key, wert in WOCHENTAGE.items()}
 WOCHENTAG_NAMEN = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
