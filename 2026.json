@@ -1,0 +1,16 @@
+{
+  "jahr": 2026,
+  "start_date": "2026-09-21",
+  "end_date": "2027-04-25",
+  "last_group": "freitag",
+  "groups": {
+    "freitag": {
+      "wochentag": "Freitag",
+      "platz": "3",
+      "startzeit": "16:00",
+      "endzeit": "17:30",
+      "players": {},
+      "verteilung": {}
+    }
+  }
+}

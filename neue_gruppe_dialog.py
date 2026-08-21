@@ -74,3 +74,6 @@ class NeueGruppeDialog:
 
         messagebox.showinfo("Gespeichert", f"Gruppe {self.anzeige_wochentag} wurde gespeichert.")
         self.root.destroy()
+
+        if hasattr(self.root.master, "refresh"):
+            self.root.master.refresh()
