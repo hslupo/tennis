@@ -1,0 +1,62 @@
+[
+  {
+    "id": "spielera",
+    "name": "SpielerA",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "spielerb",
+    "name": "SpielerB",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "spielerc",
+    "name": "SpielerC",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "spielerd",
+    "name": "SpielerD",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "spielere",
+    "name": "SpielerE",
+    "telefon": "Vorname Nachname E",
+    "mobil": ""
+  },
+  {
+    "id": "spielerf",
+    "name": "SpielerF",
+    "telefon": "012365",
+    "mobil": "Vorname Nachname F"
+  },
+  {
+    "id": "spielerg",
+    "name": "SpielerG",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "spielerb2",
+    "name": "SpielerB",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "spieleri",
+    "name": "SpielerI",
+    "telefon": "",
+    "mobil": ""
+  },
+  {
+    "id": "spielerj",
+    "name": "SpielerJ",
+    "telefon": "",
+    "mobil": ""
+  }
+]

@@ -1,0 +1,111 @@
+{
+  "jahr": 2025,
+  "start_date": "2025-09-15",
+  "end_date": "2026-04-26",
+  "last_group": "freitag",
+  "groups": {
+    "freitag": {
+      "wochentag": "Freitag",
+      "platz": "3",
+      "startzeit": "16:00",
+      "endzeit": "17:30",
+      "seed": 2,
+      "players": {
+        "spielerg": {
+          "nicht_moeglich": [
+            "19.09.2025",
+            "03.10.2025",
+            "31.10.2025",
+            "14.11.2025",
+            "12.12.2025",
+            "10.10.2025"
+          ]
+        },
+        "spielerb2": {
+          "nicht_moeglich": []
+        },
+        "spielerf": {
+          "nicht_moeglich": [
+            "19.09.2025",
+            "31.10.2025",
+            "14.11.2025",
+            "12.12.2025",
+            "10.10.2025"
+          ]
+        },
+        "spielerd": {
+          "nicht_moeglich": [
+            "26.09.2025"
+          ]
+        },
+        "spieleri": {
+          "nicht_moeglich": [
+            "28.11.2025",
+            "12.12.2025",
+            "14.11.2025"
+          ]
+        },
+        "spielerj": {
+          "nicht_moeglich": []
+        },
+        "spielera": {
+          "nicht_moeglich": [
+            "26.09.2025",
+            "17.10.2025",
+            "24.10.2025",
+            "27.03.2026",
+            "03.04.2026"
+          ]
+        },
+        "spielere": {
+          "nicht_moeglich": [
+            "17.10.2025",
+            "26.09.2025"
+          ]
+        }
+      },
+      "verteilung": {
+        "19.09.2025": ["spielerb2", "spielerd", "spielere", "spielerj"],
+        "26.09.2025": ["spielerg", "spieleri", "spielerf", "spielerb2"],
+        "03.10.2025": ["spielera", "spielerj", "spieleri", "spielere"],
+        "10.10.2025": ["spielerd", "spieleri", "spielera", "spielerb2"],
+        "17.10.2025": ["spielerg", "spielerj", "spieleri", "spielerd"],
+        "24.10.2025": ["spielere", "spielerg", "spielerf", "spielerd"],
+        "31.10.2025": ["spielera", "spielerb2", "spielerj", "spieleri"],
+        "07.11.2025": ["spielerg", "spielera", "spielere", "spielerf"],
+        "14.11.2025": ["spielerd", "spielera", "spielerj", "spielerb2"],
+        "21.11.2025": ["spieleri", "spielere", "spielerf", "spielerg"],
+        "28.11.2025": ["spielerd", "spielerf", "spielera", "spielerj"],
+        "05.12.2025": ["spielerb2", "spielere", "spieleri", "spielerg"],
+        "12.12.2025": ["spielera", "spielere", "spielerd", "spielerb2"],
+        "19.12.2025": ["spielerj", "spielerg", "spielerf", "spieleri"],
+        "26.12.2025": ["spielere", "spieleri", "spielera", "spielerd"],
+        "02.01.2026": ["spielerb2", "spielerf", "spielerj", "spielerg"],
+        "09.01.2026": ["spielere", "spielerj", "spieleri", "spielerd"],
+        "16.01.2026": ["spielera", "spielerg", "spielerb2", "spielerf"],
+        "23.01.2026": ["spielerd", "spielerg", "spielera", "spieleri"],
+        "30.01.2026": ["spielere", "spielerj", "spielerb2", "spielerf"],
+        "06.02.2026": ["spielerd", "spielerf", "spieleri", "spielerb2"],
+        "13.02.2026": ["spielerg", "spielera", "spielerj", "spielere"],
+        "20.02.2026": ["spielerf", "spielerd", "spielerb2", "spielerg"],
+        "27.02.2026": ["spieleri", "spielere", "spielerj", "spielera"],
+        "06.03.2026": ["spielerf", "spielerd", "spieleri", "spielere"],
+        "13.03.2026": ["spielerg", "spielerj", "spielerb2", "spielera"],
+        "20.03.2026": ["spielerd", "spielerg", "spielerj", "spielere"],
+        "27.03.2026": ["spieleri", "spielerf", "spielerb2", "spielerj"],
+        "03.04.2026": ["spielerd", "spielerg", "spielerb2", "spielere"],
+        "10.04.2026": ["spielera", "spielerf", "spieleri", "spielerd"],
+        "17.04.2026": ["spielera", "spielerg", "spieleri", "spielerj"],
+        "24.04.2026": ["spielerb2", "spielere", "spielera", "spielerf"]
+      }
+    },
+    "dienstag": {
+      "wochentag": "Dienstag",
+      "platz": "2",
+      "startzeit": "10:00",
+      "endzeit": "12:00",
+      "players": {},
+      "verteilung": {}
+    }
+  }
+}
