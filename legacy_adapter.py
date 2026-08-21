@@ -100,6 +100,7 @@ def lade_saison(jahr: int) -> dict | None:
             players[m["spieler_id"]] = {
                 "nicht_moeglich": [_iso_zu_dmy(iso) for iso in sorted(nicht_verf_iso)],
                 "anzeige_name": m["anzeige_name"],
+                "name": m["name"],
                 "spitzname_override": m["spitzname_override"],
             }
 

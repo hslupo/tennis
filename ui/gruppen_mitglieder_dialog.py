@@ -116,7 +116,13 @@ class GruppenMitgliederDialog(QDialog):
     def _refresh_list(self):
         self.listbox.clear()
         for pid, eintrag in sorted(self.gruppe["players"].items(), key=lambda kv: kv[1]["anzeige_name"].lower()):
-            item = QListWidgetItem(eintrag["anzeige_name"])
+            anzeige_name = eintrag["anzeige_name"]
+            voller_name = eintrag.get("name", "")
+            if voller_name and voller_name != anzeige_name:
+                text = f"{anzeige_name} ({voller_name})"
+            else:
+                text = anzeige_name
+            item = QListWidgetItem(text)
             item.setData(Qt.UserRole, pid)
             self.listbox.addItem(item)
 
