@@ -40,8 +40,22 @@ class MigrationTest(unittest.TestCase):
         self.assertEqual(verletzungen, [])
 
     def test_duplicate_display_names_stay_distinct_players(self):
-        rows = self.conn.execute("SELECT id FROM spieler WHERE name = 'SpielerB'").fetchall()
+        rows = self.conn.execute("SELECT id FROM spieler WHERE spitzname = 'SpielerB'").fetchall()
         self.assertEqual(len(rows), 2)
+
+    def test_full_name_misplaced_in_contact_field_is_recovered(self):
+        row = self.conn.execute("SELECT name, telefon FROM spieler WHERE spitzname = 'SpielerE'").fetchone()
+        self.assertEqual(row["name"], "Vorname Nachname E")
+        self.assertEqual(row["telefon"], "")
+
+        row = self.conn.execute("SELECT name, mobil, telefon FROM spieler WHERE spitzname = 'SpielerF'").fetchone()
+        self.assertEqual(row["name"], "Vorname Nachname F")
+        self.assertEqual(row["mobil"], "")
+        self.assertEqual(row["telefon"], "012365")
+
+    def test_players_without_contact_quirks_default_name_to_nickname(self):
+        row = self.conn.execute("SELECT name, spitzname FROM spieler WHERE spitzname = 'SpielerA'").fetchone()
+        self.assertEqual(row["name"], "SpielerA")
 
     def test_empty_group_has_no_termine(self):
         gruppe = self.conn.execute("SELECT id FROM gruppe WHERE name = 'Dienstag'").fetchone()
@@ -50,16 +64,16 @@ class MigrationTest(unittest.TestCase):
 
     def test_verteilung_references_correct_players(self):
         termin = self.conn.execute("SELECT id FROM termin WHERE datum = '2025-09-19'").fetchone()
-        namen = {
-            row["name"]
+        spitznamen = {
+            row["spitzname"]
             for row in self.conn.execute(
-                """SELECT s.name FROM verteilung v
+                """SELECT s.spitzname FROM verteilung v
                    JOIN spieler s ON s.id = v.spieler_id
                    WHERE v.termin_id = ?""",
                 (termin["id"],),
             )
         }
-        self.assertEqual(namen, {"SpielerB", "SpielerD", "SpielerE", "SpielerJ"})
+        self.assertEqual(spitznamen, {"SpielerB", "SpielerD", "SpielerE", "SpielerJ"})
 
 
 if __name__ == "__main__":

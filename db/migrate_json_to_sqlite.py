@@ -43,12 +43,35 @@ def find_default_season_files(root: Path) -> list[Path]:
     return sorted(p for p in root.glob("*.json") if re.fullmatch(r"\d{4}\.json", p.name))
 
 
+def _wirkt_wie_voller_name(wert: str) -> bool:
+    """Heuristik: enthält ein Leerzeichen und keine Ziffer -> vermutlich ein Name, keine Telefonnummer."""
+    return bool(wert) and " " in wert and not any(zeichen.isdigit() for zeichen in wert)
+
+
 def migrate_spieler(conn, spieler_json_path: Path) -> dict[str, int]:
     mapping: dict[str, int] = {}
     for eintrag in load_json(spieler_json_path):
+        spitzname = eintrag["name"]
+        telefon = eintrag.get("telefon", "")
+        mobil = eintrag.get("mobil", "")
+        voller_name = spitzname
+
+        # In den bestehenden Daten steckt in Einzelfällen ein voller Name im
+        # Telefon-/Mobil-Feld (vermutlich mangels eines eigenen Namensfelds).
+        if _wirkt_wie_voller_name(telefon):
+            print(f"  HINWEIS: Telefon-Feld von '{spitzname}' sieht nach einem vollen Namen aus "
+                  f"('{telefon}') -> als Name übernommen, Telefon-Feld geleert")
+            voller_name = telefon
+            telefon = ""
+        elif _wirkt_wie_voller_name(mobil):
+            print(f"  HINWEIS: Mobil-Feld von '{spitzname}' sieht nach einem vollen Namen aus "
+                  f"('{mobil}') -> als Name übernommen, Mobil-Feld geleert")
+            voller_name = mobil
+            mobil = ""
+
         cur = conn.execute(
-            "INSERT INTO spieler (name, telefon, mobil) VALUES (?, ?, ?)",
-            (eintrag["name"], eintrag.get("telefon", ""), eintrag.get("mobil", "")),
+            "INSERT INTO spieler (name, spitzname, telefon, mobil) VALUES (?, ?, ?, ?)",
+            (voller_name, spitzname, telefon, mobil),
         )
         mapping[eintrag["id"]] = cur.lastrowid
     return mapping
@@ -58,7 +81,10 @@ def get_or_create_spieler_id(conn, spieler_map: dict[str, int], alt_id: str) -> 
     if alt_id in spieler_map:
         return spieler_map[alt_id]
     print(f"  WARNUNG: Spieler-ID '{alt_id}' fehlt in spieler.json, lege Platzhalter-Datensatz an")
-    cur = conn.execute("INSERT INTO spieler (name, telefon, mobil) VALUES (?, '', '')", (alt_id,))
+    cur = conn.execute(
+        "INSERT INTO spieler (name, spitzname, telefon, mobil) VALUES (?, ?, '', '')",
+        (alt_id, alt_id),
+    )
     spieler_map[alt_id] = cur.lastrowid
     return cur.lastrowid
 

@@ -25,15 +25,19 @@ CREATE TABLE gruppe (
 
 CREATE TABLE spieler (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL DEFAULT '',
+    spitzname TEXT NOT NULL,
     telefon TEXT NOT NULL DEFAULT '',
     mobil TEXT NOT NULL DEFAULT ''
 );
 
+-- spitzname_override: falls gesetzt, gilt dieser Anzeigename statt spieler.spitzname
+-- innerhalb dieser einen Gruppe (z.B. um zwei gleichnamige Mitglieder zu unterscheiden).
 CREATE TABLE gruppen_mitglied (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     gruppe_id INTEGER NOT NULL REFERENCES gruppe(id) ON DELETE CASCADE,
     spieler_id INTEGER NOT NULL REFERENCES spieler(id) ON DELETE CASCADE,
+    spitzname_override TEXT,
     UNIQUE (gruppe_id, spieler_id)
 );
 
