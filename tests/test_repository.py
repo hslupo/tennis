@@ -96,6 +96,28 @@ class RepositoryTest(unittest.TestCase):
         daten = self.termin_repo.nicht_verfuegbare_iso_daten_fuer_spieler(gruppe_id, spieler_id)
         self.assertEqual(daten, set())
 
+    def test_spielt_bestaetigt_setzen_und_entfernen(self):
+        saison_id = self.saison_repo.upsert(2025, "2025-09-15", "2026-04-26")
+        gruppe_id = self.gruppe_repo.upsert(saison_id, 4, "Freitag", "3", "16:00", "17:30")
+        spieler_id = self.spieler_repo.erstellen("Erna", "Erna")
+        termin_ids = self.termin_repo.ids_fuer_daten(gruppe_id, ["2025-09-19", "2025-09-26"])
+
+        self.termin_repo.spielt_bestaetigt_setzen(termin_ids["2025-09-19"], spieler_id)
+        daten = self.termin_repo.spielt_bestaetigte_iso_daten_fuer_spieler(gruppe_id, spieler_id)
+        self.assertEqual(daten, {"2025-09-19"})
+
+        self.termin_repo.spielt_bestaetigt_entfernen(termin_ids["2025-09-19"], spieler_id)
+        daten = self.termin_repo.spielt_bestaetigte_iso_daten_fuer_spieler(gruppe_id, spieler_id)
+        self.assertEqual(daten, set())
+
+    def test_saison_alle_liefert_absteigend_sortiert(self):
+        self.saison_repo.upsert(2024, "2024-09-16", "2025-04-27")
+        self.saison_repo.upsert(2026, "2026-09-14", "2027-04-25")
+        self.saison_repo.upsert(2025, "2025-09-15", "2026-04-26")
+
+        jahre = [row["jahr"] for row in self.saison_repo.alle()]
+        self.assertEqual(jahre, [2026, 2025, 2024])
+
     def test_verteilung_ersetzen_fuer_termin(self):
         saison_id = self.saison_repo.upsert(2025, "2025-09-15", "2026-04-26")
         gruppe_id = self.gruppe_repo.upsert(saison_id, 4, "Freitag", "3", "16:00", "17:30")

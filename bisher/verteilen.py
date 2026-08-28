@@ -1,6 +1,10 @@
 # verteilen.py
+import os
+import sys
 import tkinter as tk
 from tkinter import messagebox
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import legacy_adapter
 from services.verteilung_service import plane_verteilung, verteile_gruppe

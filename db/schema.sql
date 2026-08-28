@@ -63,8 +63,18 @@ CREATE TABLE verteilung (
     UNIQUE (termin_id, spieler_id)
 );
 
+-- Explizit bestätigt "spielt" (3. Zustand neben "kann nicht" = nicht_verfuegbar
+-- und "noch nicht festgelegt" = weder hier noch in nicht_verfuegbar vorhanden).
+CREATE TABLE spielt_bestaetigt (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    termin_id INTEGER NOT NULL REFERENCES termin(id) ON DELETE CASCADE,
+    spieler_id INTEGER NOT NULL REFERENCES spieler(id) ON DELETE CASCADE,
+    UNIQUE (termin_id, spieler_id)
+);
+
 CREATE INDEX idx_gruppe_saison ON gruppe(saison_id);
 CREATE INDEX idx_gruppen_mitglied_gruppe ON gruppen_mitglied(gruppe_id);
 CREATE INDEX idx_termin_gruppe ON termin(gruppe_id);
 CREATE INDEX idx_nicht_verfuegbar_termin ON nicht_verfuegbar(termin_id);
 CREATE INDEX idx_verteilung_termin ON verteilung(termin_id);
+CREATE INDEX idx_spielt_bestaetigt_termin ON spielt_bestaetigt(termin_id);

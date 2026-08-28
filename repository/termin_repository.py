@@ -48,3 +48,26 @@ class TerminRepository:
             (termin_id, spieler_id),
         )
         self.conn.commit()
+
+    def spielt_bestaetigte_iso_daten_fuer_spieler(self, gruppe_id: int, spieler_id: int) -> set[str]:
+        rows = self.conn.execute(
+            """SELECT t.datum FROM spielt_bestaetigt sb
+               JOIN termin t ON t.id = sb.termin_id
+               WHERE t.gruppe_id = ? AND sb.spieler_id = ?""",
+            (gruppe_id, spieler_id),
+        ).fetchall()
+        return {row["datum"] for row in rows}
+
+    def spielt_bestaetigt_setzen(self, termin_id: int, spieler_id: int) -> None:
+        self.conn.execute(
+            "INSERT OR IGNORE INTO spielt_bestaetigt (termin_id, spieler_id) VALUES (?, ?)",
+            (termin_id, spieler_id),
+        )
+        self.conn.commit()
+
+    def spielt_bestaetigt_entfernen(self, termin_id: int, spieler_id: int) -> None:
+        self.conn.execute(
+            "DELETE FROM spielt_bestaetigt WHERE termin_id = ? AND spieler_id = ?",
+            (termin_id, spieler_id),
+        )
+        self.conn.commit()

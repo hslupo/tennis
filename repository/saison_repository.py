@@ -10,6 +10,11 @@ class SaisonRepository:
             "SELECT id, jahr, start_date, end_date FROM saison WHERE jahr = ?", (jahr,)
         ).fetchone()
 
+    def alle(self) -> list[sqlite3.Row]:
+        return self.conn.execute(
+            "SELECT id, jahr, start_date, end_date FROM saison ORDER BY jahr DESC"
+        ).fetchall()
+
     def upsert(self, jahr: int, start_date: str, end_date: str) -> int:
         """Legt die Saison an oder aktualisiert Start-/Enddatum, falls sie bereits existiert."""
         vorhanden = self.get_by_jahr(jahr)

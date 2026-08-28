@@ -66,6 +66,11 @@ class VerteilungDialog(QDialog):
         table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         layout.addWidget(table)
 
+        layout.addWidget(QLabel(
+            "Beim Übernehmen werden nur die bisherigen Einsätze ersetzt. "
+            "Die als 'kann nicht' markierten Termine bleiben erhalten."
+        ))
+
         radio_row = QHBoxLayout()
         self.button_group = QButtonGroup(self)
         for i, seed in enumerate(self.SEEDS):
@@ -76,7 +81,7 @@ class VerteilungDialog(QDialog):
             radio_row.addWidget(radio)
         layout.addLayout(radio_row)
 
-        btn_uebernehmen = QPushButton("Seed übernehmen")
+        btn_uebernehmen = QPushButton("Neue Verteilung übernehmen")
         btn_uebernehmen.clicked.connect(self._seed_uebernehmen)
         layout.addWidget(btn_uebernehmen)
 

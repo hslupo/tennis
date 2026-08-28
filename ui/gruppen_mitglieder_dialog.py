@@ -142,6 +142,7 @@ class GruppenMitgliederDialog(QDialog):
         for pid in dlg.gewaehlte_ids:
             self.gruppe["players"][pid] = {
                 "nicht_moeglich": [],
+                "spielt": [],
                 "anzeige_name": self.spieler_namen.get(pid, str(pid)),
                 "spitzname_override": None,
             }

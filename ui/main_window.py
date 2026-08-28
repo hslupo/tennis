@@ -3,7 +3,7 @@ import datetime
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton,
-    QListWidget, QListWidgetItem, QComboBox, QMessageBox,
+    QListWidget, QListWidgetItem, QComboBox,
 )
 
 import legacy_adapter
@@ -15,11 +15,14 @@ from ui.gruppen_mitglieder_dialog import GruppenMitgliederDialog
 from ui.verfuegbarkeit_view import VerfuegbarkeitView
 from ui.verteilung_dialog import VerteilungDialog
 from ui.auswertung_dialog import AuswertungDialog
+from ui.spieler_termine_dialog import SpielerTermineDialog
 
 WOCHENTAGE = [
     "Montag", "Dienstag", "Mittwoch",
     "Donnerstag", "Freitag", "Samstag", "Sonntag",
 ]
+
+NEU_MARKER = "* NEU *"
 
 
 class MainWindow(QMainWindow):
@@ -28,16 +31,23 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Tennisrunden Verwaltung")
         self.resize(1100, 750)
 
-        self.jahr = datetime.date.today().year
+        jahre = legacy_adapter.alle_saison_jahre()
+        self.jahr = jahre[0] if jahre else datetime.date.today().year
         self.saison: dict | None = None
         self.wochentag_key: str | None = None
+        self._gruppen_keys: list[str] = []
+        self._saison_jahre: list[int] = []
         self.spieler_namen: dict[int, str] = legacy_adapter.lade_spieler_namen()
 
         central = QWidget()
         self.setCentralWidget(central)
-        root_layout = QHBoxLayout(central)
+        root_layout = QVBoxLayout(central)
 
-        root_layout.addWidget(self._baue_menue())
+        root_layout.addLayout(self._baue_topleiste())
+
+        self.heading_label = QLabel()
+        self.heading_label.setStyleSheet("font-size: 16pt; font-weight: bold;")
+        root_layout.addWidget(self.heading_label)
 
         self.main_area = QWidget()
         self.main_layout = QVBoxLayout(self.main_area)
@@ -45,34 +55,35 @@ class MainWindow(QMainWindow):
 
         self.refresh()
 
-    # ---------- Menü ----------
-    def _baue_menue(self) -> QWidget:
-        menu_widget = QWidget()
-        menu_widget.setFixedWidth(220)
-        menu_layout = QVBoxLayout(menu_widget)
-
-        titel = QLabel("<b>Verwalten</b>")
-        menu_layout.addWidget(titel)
+    # ---------- Menü-Leiste ----------
+    def _baue_topleiste(self) -> QHBoxLayout:
+        row = QHBoxLayout()
 
         btn_spieler = QPushButton("Spieler")
         btn_spieler.clicked.connect(self._oeffne_spielerliste)
-        menu_layout.addWidget(btn_spieler)
+        row.addWidget(btn_spieler)
 
-        menu_layout.addWidget(QLabel("<b>Gruppen:</b>"))
+        btn_spieler_termine = QPushButton("Spieler-Termine")
+        btn_spieler_termine.clicked.connect(self._spieler_termine_anzeigen)
+        row.addWidget(btn_spieler_termine)
 
-        self.gruppen_listbox = QListWidget()
-        menu_layout.addWidget(self.gruppen_listbox)
+        row.addWidget(QLabel("Saison:"))
+        self.saison_combo = QComboBox()
+        self.saison_combo.currentIndexChanged.connect(self._saison_combo_gewaehlt)
+        row.addWidget(self.saison_combo)
 
-        self.btn_gruppe_neu = QPushButton("Gruppe NEU")
-        self.btn_gruppe_neu.clicked.connect(self._neue_gruppe)
-        menu_layout.addWidget(self.btn_gruppe_neu)
+        row.addWidget(QLabel("Gruppe:"))
+        self.gruppe_combo = QComboBox()
+        self.gruppe_combo.currentIndexChanged.connect(self._gruppe_combo_gewaehlt)
+        row.addWidget(self.gruppe_combo)
 
-        btn_saison = QPushButton("Saison")
-        btn_saison.clicked.connect(self._oeffne_saison)
-        menu_layout.addWidget(btn_saison)
+        row.addStretch()
+        return row
 
-        menu_layout.addStretch()
-        return menu_widget
+    def _saison_text(self) -> str:
+        if not self.saison:
+            return f"Saison {self.jahr}"
+        return f"Saison {self.saison['start_date'][:4]}/{self.saison['end_date'][:4]}"
 
     # ---------- Zustand / Hauptbereich ----------
     def refresh(self):
@@ -82,26 +93,27 @@ class MainWindow(QMainWindow):
         self.saison = saison
 
         vorhandene_keys = list(saison["groups"].keys()) if saison and "groups" in saison else []
+        ziel_key = None
+        if state == "SHOW_GROUP":
+            ziel_key = saison.get("last_group") or vorhandene_keys[0]
+            if ziel_key not in saison["groups"]:
+                ziel_key = vorhandene_keys[0]
 
-        self.gruppen_listbox.clear()
-        self.gruppen_listbox.setEnabled(state != "NO_SAISON")
-        self.btn_gruppe_neu.setEnabled(state != "NO_SAISON")
-        for tag in WOCHENTAGE:
-            if tag.lower() not in vorhandene_keys:
-                self.gruppen_listbox.addItem(tag)
+        self._aktualisiere_saison_combo()
+        self._aktualisiere_gruppe_combo(vorhandene_keys, ziel_key, state)
 
         if state == "NO_SAISON":
+            self.wochentag_key = None
+            self.heading_label.setText(f"{self._saison_text()}: noch nicht angelegt")
             self.main_layout.addWidget(QLabel("Noch keine Saison angelegt"))
             return
         if state == "NO_GROUP":
-            self.main_layout.addWidget(QLabel("Noch keine Gruppen vorhanden"))
+            self.wochentag_key = None
+            self.heading_label.setText(f"{self._saison_text()} – neue Gruppe anlegen")
+            self._zeige_wochentag_auswahl()
             return
 
-        key = saison.get("last_group") or (vorhandene_keys[0] if vorhandene_keys else "")
-        if key and key in saison["groups"]:
-            self._zeige_gruppe(key)
-        else:
-            self.main_layout.addWidget(QLabel("Keine Gruppen vorhanden"))
+        self._zeige_gruppe(ziel_key)
 
     def _layout_leeren(self, layout):
         while layout.count():
@@ -110,6 +122,92 @@ class MainWindow(QMainWindow):
                 item.widget().deleteLater()
             elif item.layout():
                 self._layout_leeren(item.layout())
+
+    # ---------- Saison-Auswahl ----------
+    def _aktualisiere_saison_combo(self):
+        self._saison_jahre = legacy_adapter.alle_saison_jahre()
+        self.saison_combo.blockSignals(True)
+        self.saison_combo.clear()
+        self.saison_combo.addItem(NEU_MARKER)
+        for jahr in self._saison_jahre:
+            self.saison_combo.addItem(str(jahr))
+        if self.jahr in self._saison_jahre:
+            self.saison_combo.setCurrentIndex(self._saison_jahre.index(self.jahr) + 1)
+        else:
+            self.saison_combo.setCurrentIndex(-1)
+        self.saison_combo.blockSignals(False)
+
+    def _saison_combo_gewaehlt(self, index: int):
+        if index < 0:
+            return
+        text = self.saison_combo.itemText(index)
+        if text == NEU_MARKER:
+            self._neue_saison()
+            return
+        jahr = int(text)
+        if jahr != self.jahr:
+            self.jahr = jahr
+            self.refresh()
+
+    def _neue_saison(self):
+        vorschlag_jahr = (max(self._saison_jahre) + 1) if self._saison_jahre else datetime.date.today().year
+
+        def on_saved():
+            self.jahr = vorschlag_jahr
+
+        dlg = SaisonDialog(self, vorschlag_jahr, on_saved=on_saved)
+        dlg.exec()
+        self.refresh()
+
+    # ---------- Gruppen-Auswahl ----------
+    def _aktualisiere_gruppe_combo(self, vorhandene_keys: list[str], ziel_key: str | None, state: str):
+        self._gruppen_keys = vorhandene_keys
+        self.gruppe_combo.blockSignals(True)
+        self.gruppe_combo.clear()
+        for key in vorhandene_keys:
+            self.gruppe_combo.addItem(self.saison["groups"][key]["wochentag"])
+        self.gruppe_combo.addItem(NEU_MARKER)
+        self.gruppe_combo.setEnabled(state != "NO_SAISON")
+        if ziel_key in vorhandene_keys:
+            self.gruppe_combo.setCurrentIndex(vorhandene_keys.index(ziel_key))
+        elif state != "NO_SAISON":
+            self.gruppe_combo.setCurrentIndex(len(vorhandene_keys))
+        else:
+            self.gruppe_combo.setCurrentIndex(-1)
+        self.gruppe_combo.blockSignals(False)
+
+    def _gruppe_combo_gewaehlt(self, index: int):
+        if index < 0:
+            return
+
+        if index >= len(self._gruppen_keys):
+            self.wochentag_key = None
+            self.heading_label.setText(f"{self._saison_text()} – neue Gruppe anlegen")
+            self._zeige_wochentag_auswahl()
+            return
+
+        key = self._gruppen_keys[index]
+        if key != self.wochentag_key:
+            self._zeige_gruppe(key)
+
+    # ---------- Wochentag-Auswahl für neue Gruppe ----------
+    def _zeige_wochentag_auswahl(self):
+        self._layout_leeren(self.main_layout)
+        self.main_layout.addWidget(QLabel("<b>Bitte Wochentag wählen, um eine neue Gruppe anzulegen:</b>"))
+
+        vorhandene = set(self.saison.get("groups", {}).keys()) if self.saison else set()
+        liste = QListWidget()
+        for tag in WOCHENTAGE:
+            if tag.lower() not in vorhandene:
+                liste.addItem(tag)
+        liste.itemClicked.connect(self._wochentag_gewaehlt)
+        self.main_layout.addWidget(liste)
+
+    def _wochentag_gewaehlt(self, item: QListWidgetItem):
+        wochentag = item.text()
+        dlg = GruppeDialog(self, self.jahr, wochentag, on_saved=self.refresh)
+        dlg.exec()
+        self.refresh()
 
     # ---------- Gruppe anzeigen ----------
     def _zeige_gruppe(self, wochentag_key: str):
@@ -122,16 +220,7 @@ class MainWindow(QMainWindow):
             self.saison["last_group"] = wochentag_key
             legacy_adapter.set_last_group(self.jahr, wochentag_key)
 
-        top_row = QHBoxLayout()
-        self._gruppen_keys = list(self.saison["groups"].keys())
-        self.gruppen_combo = QComboBox()
-        for k in self._gruppen_keys:
-            self.gruppen_combo.addItem(self.saison["groups"][k]["wochentag"])
-        self.gruppen_combo.setCurrentIndex(self._gruppen_keys.index(wochentag_key))
-        self.gruppen_combo.currentIndexChanged.connect(self._gruppen_wechsel)
-        top_row.addWidget(self.gruppen_combo)
-        top_row.addStretch()
-        self.main_layout.addLayout(top_row)
+        self.heading_label.setText(f"{self._saison_text()} – Gruppe {gruppe['wochentag']}")
 
         info_label = QLabel(f"<b>Platz {gruppe['platz']} – {gruppe['startzeit']} bis {gruppe['endzeit']}</b>")
         self.main_layout.addWidget(info_label)
@@ -170,11 +259,6 @@ class MainWindow(QMainWindow):
         self.verfuegbarkeit_view = VerfuegbarkeitView(self.saison, wochentag_key)
         content_row.addWidget(self.verfuegbarkeit_view, stretch=1)
 
-    def _gruppen_wechsel(self, index: int):
-        key = self._gruppen_keys[index]
-        if key != self.wochentag_key:
-            self._zeige_gruppe(key)
-
     # ---------- Aktionen ----------
     def _oeffne_spielerliste(self):
         dlg = SpielerDialog(self, on_change=self._spieler_namen_neu_laden)
@@ -183,16 +267,17 @@ class MainWindow(QMainWindow):
     def _spieler_namen_neu_laden(self):
         self.spieler_namen = legacy_adapter.lade_spieler_namen()
 
-    def _neue_gruppe(self):
-        item = self.gruppen_listbox.currentItem()
-        if item is None:
-            QMessageBox.warning(self, "Hinweis", "Bitte zuerst einen Wochentag aus der Liste auswählen.")
-            return
-        dlg = GruppeDialog(self, self.jahr, item.text(), on_saved=self.refresh)
-        dlg.exec()
-
-    def _oeffne_saison(self):
-        dlg = SaisonDialog(self, self.jahr, on_saved=self.refresh)
+    def _spieler_termine_anzeigen(self):
+        spieler_id = next(
+            (
+                pid
+                for gruppe in self.saison.get("groups", {}).values()
+                for pid, eintrag in gruppe.get("players", {}).items()
+                if eintrag.get("name") == "Horst Schmidt"
+            ),
+            None,
+        ) if self.saison else None
+        dlg = SpielerTermineDialog(self, self.saison or {}, self.spieler_namen, spieler_id)
         dlg.exec()
 
     def _spieler_verwalten(self):

@@ -58,8 +58,8 @@ class SaisonDialog(QDialog):
         self._aktualisiere_labels()
 
     def _aktualisiere_labels(self):
-        self.start_label.setText(self.start_date.isoformat())
-        self.end_label.setText(self.end_date.isoformat())
+        self.start_label.setText(self.start_date.strftime("%d.%m.%Y"))
+        self.end_label.setText(self.end_date.strftime("%d.%m.%Y"))
 
     def _shift(self, feld, tage):
         if feld == "start":

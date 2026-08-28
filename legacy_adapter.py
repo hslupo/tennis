@@ -20,7 +20,7 @@ import json
 import os
 from pathlib import Path
 
-from db.connection import connect, create_schema
+from db.connection import connect, create_schema, migrate
 from db.migrate_json_to_sqlite import WOCHENTAGE
 from repository.gruppe_repository import GruppeRepository
 from repository.saison_repository import SaisonRepository
@@ -41,6 +41,8 @@ _neu = not _DB_PATH.exists()
 _conn = connect(_DB_PATH)
 if _neu:
     create_schema(_conn)
+else:
+    migrate(_conn)
 
 _saison_repo = SaisonRepository(_conn)
 _gruppe_repo = GruppeRepository(_conn)
@@ -80,6 +82,11 @@ def set_last_group(jahr: int, wochentag_key: str) -> None:
     _speichere_ui_state(state)
 
 
+def alle_saison_jahre() -> list[int]:
+    """Alle vorhandenen Saison-Jahre, neueste zuerst."""
+    return [row["jahr"] for row in _saison_repo.alle()]
+
+
 def lade_saison(jahr: int) -> dict | None:
     saison_row = _saison_repo.get_by_jahr(jahr)
     if saison_row is None:
@@ -97,8 +104,10 @@ def lade_saison(jahr: int) -> dict | None:
         players = {}
         for m in _gruppe_repo.mitglieder_mit_spielerdaten(g["id"]):
             nicht_verf_iso = _termin_repo.nicht_verfuegbare_iso_daten_fuer_spieler(g["id"], m["spieler_id"])
+            spielt_iso = _termin_repo.spielt_bestaetigte_iso_daten_fuer_spieler(g["id"], m["spieler_id"])
             players[m["spieler_id"]] = {
                 "nicht_moeglich": [_iso_zu_dmy(iso) for iso in sorted(nicht_verf_iso)],
+                "spielt": [_iso_zu_dmy(iso) for iso in sorted(spielt_iso)],
                 "anzeige_name": m["anzeige_name"],
                 "name": m["name"],
                 "spitzname_override": m["spitzname_override"],
@@ -158,7 +167,12 @@ def speichere_saison(saison: dict) -> None:
         alle_dmy = set(gruppe.get("verteilung", {}).keys())
         for eintrag in gruppe.get("players", {}).values():
             alle_dmy.update(eintrag.get("nicht_moeglich", []))
-        termin_ids = _termin_repo.ids_fuer_daten(gruppe_id, (_dmy_zu_iso(d) for d in alle_dmy))
+            alle_dmy.update(eintrag.get("spielt", []))
+        alle_iso = {_dmy_zu_iso(d) for d in alle_dmy}
+        for spieler_id in gruppe.get("players", {}):
+            alle_iso.update(_termin_repo.nicht_verfuegbare_iso_daten_fuer_spieler(gruppe_id, spieler_id))
+            alle_iso.update(_termin_repo.spielt_bestaetigte_iso_daten_fuer_spieler(gruppe_id, spieler_id))
+        termin_ids = _termin_repo.ids_fuer_daten(gruppe_id, alle_iso)
 
         for spieler_id, eintrag in gruppe.get("players", {}).items():
             gewuenscht_iso = {_dmy_zu_iso(d) for d in eintrag.get("nicht_moeglich", [])}
@@ -167,6 +181,13 @@ def speichere_saison(saison: dict) -> None:
                 _termin_repo.nicht_verfuegbar_setzen(termin_ids[iso], spieler_id)
             for iso in vorhanden_iso - gewuenscht_iso:
                 _termin_repo.nicht_verfuegbar_entfernen(termin_ids[iso], spieler_id)
+
+            gewuenscht_spielt_iso = {_dmy_zu_iso(d) for d in eintrag.get("spielt", [])}
+            vorhanden_spielt_iso = _termin_repo.spielt_bestaetigte_iso_daten_fuer_spieler(gruppe_id, spieler_id)
+            for iso in gewuenscht_spielt_iso - vorhanden_spielt_iso:
+                _termin_repo.spielt_bestaetigt_setzen(termin_ids[iso], spieler_id)
+            for iso in vorhanden_spielt_iso - gewuenscht_spielt_iso:
+                _termin_repo.spielt_bestaetigt_entfernen(termin_ids[iso], spieler_id)
 
         for datum_dmy, spieler_ids in gruppe.get("verteilung", {}).items():
             _verteilung_repo.ersetzen_fuer_termin(termin_ids[_dmy_zu_iso(datum_dmy)], spieler_ids)

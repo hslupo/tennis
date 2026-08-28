@@ -1,6 +1,10 @@
+import os
+import sys
 import tkinter as tk
 from tkinter import messagebox
 import datetime
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import legacy_adapter
 from tennisspieler import Tennisspieler
