@@ -2,7 +2,7 @@ import sqlite3
 from pathlib import Path
 
 SCHEMA_PATH = Path(__file__).parent / "schema.sql"
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 
 def connect(db_path: Path) -> sqlite3.Connection:
@@ -35,6 +35,18 @@ def migrate(conn: sqlite3.Connection) -> None:
         )
         conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_spielt_bestaetigt_termin ON spielt_bestaetigt(termin_id)"
+        )
+
+    if version < 3:
+        conn.execute(
+            "ALTER TABLE gruppe ADD COLUMN ist_importiert INTEGER NOT NULL DEFAULT 0 "
+            "CHECK (ist_importiert IN (0, 1))"
+        )
+        conn.execute(
+            """UPDATE gruppe
+               SET ist_importiert = 1
+               WHERE saison_id = (SELECT id FROM saison WHERE jahr = 2026)
+                 AND wochentag IN (1, 6)"""
         )
 
     if version < SCHEMA_VERSION:

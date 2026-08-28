@@ -7,6 +7,10 @@ from collections import defaultdict
 
 from services.termine_service import generiere_termine
 
+PAUSEN_GEWICHTUNG = 3
+KANN_NICHT_PAUSENFAKTOR = 0.5
+GRUENER_WUNSCH_STRAFE = 2
+
 
 def verteile_gruppe(
     gruppe: dict,
@@ -32,16 +36,18 @@ def verteile_gruppe(
     ergebnis = {termin: [] for termin in termine}
     spieler_einsaetze = {s: 0 for s in gruppe["players"].keys()}
     paarungen = defaultdict(lambda: defaultdict(int))
-    verpasst = {s: 0 for s in gruppe["players"].keys()}
+    pausenkoeffizient = {s: 0.0 for s in gruppe["players"].keys()}
 
     if seed is not None:
         random.seed(seed)
 
     def bewerte_spieler(kandidat, bereits_ausgewaehlt):
-        einsatz_score = spieler_einsaetze[kandidat]
+        termin_wunsch = 0 if termin in gruppe["players"][kandidat].get("spielt", []) else GRUENER_WUNSCH_STRAFE
+        pause_score = -pausenkoeffizient[kandidat]
         paarung_score = sum(paarungen[kandidat][s] for s in bereits_ausgewaehlt)
-        verpasst_score = -verpasst[kandidat]
-        return (einsatz_score, paarung_score, verpasst_score)
+        einsatz_score = spieler_einsaetze[kandidat]
+        ausgeglichener_score = pause_score * PAUSEN_GEWICHTUNG + paarung_score
+        return (ausgeglichener_score + termin_wunsch, einsatz_score)
 
     def ist_erlaubte_paarung(spieler1, spieler2):
         return tuple(sorted([spieler1, spieler2])) not in ausgeschlossene_paarungen
@@ -74,12 +80,14 @@ def verteile_gruppe(
         for s in gruppe["players"].keys():
             if s in ausgewaehlte_spieler:
                 spieler_einsaetze[s] += 1
-                verpasst[s] = 0
+                pausenkoeffizient[s] = 0.0
                 for other in ausgewaehlte_spieler:
                     if s != other:
                         paarungen[s][other] += 1
+            elif termin in gruppe["players"][s].get("nicht_moeglich", []):
+                pausenkoeffizient[s] += KANN_NICHT_PAUSENFAKTOR
             else:
-                verpasst[s] += 1
+                pausenkoeffizient[s] += 1.0
 
     return ergebnis
 

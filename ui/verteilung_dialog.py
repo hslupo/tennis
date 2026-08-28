@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QTableView, QRadioButton, QPushButton,
-    QMessageBox, QButtonGroup, QHeaderView,
+    QMessageBox, QButtonGroup, QHeaderView, QLabel,
 )
 
 import legacy_adapter

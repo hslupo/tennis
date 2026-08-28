@@ -1,10 +1,9 @@
-from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QCheckBox,
     QComboBox,
     QDialog,
     QHBoxLayout,
     QLabel,
+    QPushButton,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
@@ -13,6 +12,7 @@ from datetime import datetime
 
 import legacy_adapter
 from services.termine_service import generiere_termine
+from ui.verfuegbarkeit_view import _ANZEIGE, _NAECHSTER_ZUSTAND, _NEUTRAL, _KANN_NICHT, _SPIELT
 
 
 class SpielerTermineDialog(QDialog):
@@ -55,10 +55,12 @@ class SpielerTermineDialog(QDialog):
         self.gruppe_combo.currentIndexChanged.connect(self._aktualisieren)
         gruppen_layout.addWidget(self.gruppe_combo, stretch=1)
         layout.addLayout(gruppen_layout)
-        layout.addWidget(QLabel("Checkbox: leer = nicht eingeteilt, Haken = eingeteilt, halb = nicht möglich"))
+        layout.addWidget(QLabel("Für mich: grau = neutral, rot = ich kann nicht, grün = ich spiele"))
 
         self.tabelle = QTableWidget(0, 5)
-        self.tabelle.setHorizontalHeaderLabels(["Datum", "Für mich", "Andere Gruppen", "Gruppen diese Woche", "Bereits eingeteilt"])
+        self.tabelle.setHorizontalHeaderLabels([
+            "Datum", "Für mich", "Einsätze derselben Woche", "Gruppen diese Woche", "Bereits eingeteilt"
+        ])
         self.tabelle.setEditTriggers(QTableWidget.NoEditTriggers)
         self.tabelle.setSortingEnabled(False)
         self.tabelle.horizontalHeader().setStretchLastSection(True)
@@ -91,22 +93,19 @@ class SpielerTermineDialog(QDialog):
                 ]
                 datum_objekt = datetime.strptime(datum, "%d.%m.%Y").date()
                 andere = [
-                    gruppe["wochentag"]
+                    f"{gruppe['wochentag']} {anderes_datum}"
                     for gruppe in andere_gruppen
-                    if any(
-                        spieler_id in gruppe.get("verteilung", {}).get(anderes_datum, [])
-                        for anderes_datum in generiere_termine(
-                            self.saison["start_date"], self.saison["end_date"], gruppe["wochentag"]
-                        )
-                        if datetime.strptime(anderes_datum, "%d.%m.%Y").date().isocalendar()[:2]
-                        == datum_objekt.isocalendar()[:2]
-                    )
+                    for anderes_datum in gruppe.get("verteilung", {})
+                    if spieler_id in gruppe.get("verteilung", {}).get(anderes_datum, [])
+                    and datetime.strptime(anderes_datum, "%d.%m.%Y").date().isocalendar()[:2]
+                    == datum_objekt.isocalendar()[:2]
                 ]
                 eintraege.append((datum, zielgruppe["wochentag"], {
                     "gruppe": zielgruppe,
                     "datum": datum,
                     "spieler_id": spieler_id,
                     "eingeteilt": spieler_id in bereits,
+                    "spielt": datum in zielgruppe["players"].get(spieler_id, {}).get("spielt", []),
                     "nicht_moeglich": datum in zielgruppe["players"].get(spieler_id, {}).get("nicht_moeglich", []),
                     "namen": namen,
                     "andere": andere,
@@ -115,50 +114,61 @@ class SpielerTermineDialog(QDialog):
         def datum_sortwert(eintrag):
             return (eintrag[0][6:], eintrag[0][3:5], eintrag[0][:2], eintrag[1])
 
+        self.tabelle.clearContents()
         eintraege.sort(key=datum_sortwert)
         self.tabelle.setRowCount(len(eintraege))
         for row, (datum, gruppe_name, daten) in enumerate(eintraege):
             self.tabelle.setItem(row, 0, QTableWidgetItem(datum))
-            checkbox = QCheckBox()
-            checkbox.setTristate(True)
-            if daten["nicht_moeglich"]:
-                checkbox.setCheckState(Qt.PartiallyChecked)
-            elif daten["eingeteilt"]:
-                checkbox.setCheckState(Qt.Checked)
-            else:
-                checkbox.setCheckState(Qt.Unchecked)
-            checkbox.stateChanged.connect(lambda state, d=daten: self._status_geaendert(d, state))
-            self.tabelle.setCellWidget(row, 1, checkbox)
+            zustand = self._zustand(daten)
+            button = self._status_button(daten, zustand)
+            self.tabelle.setCellWidget(row, 1, button)
             self.tabelle.setItem(row, 2, QTableWidgetItem(str(len(daten["andere"]))))
             self.tabelle.setItem(row, 3, QTableWidgetItem(", ".join(daten["andere"])))
             self.tabelle.setItem(row, 4, QTableWidgetItem(", ".join(daten["namen"])))
         self.tabelle.resizeColumnsToContents()
 
-    def _status_geaendert(self, daten: dict, state: int):
+    @staticmethod
+    def _zustand(daten: dict) -> str:
+        if daten["nicht_moeglich"]:
+            return _KANN_NICHT
+        if daten["spielt"] or daten["eingeteilt"]:
+            return _SPIELT
+        return _NEUTRAL
+
+    def _status_button(self, daten: dict, zustand: str) -> QPushButton:
+        text, style = _ANZEIGE[zustand]
+        button = QPushButton(text)
+        button.setStyleSheet(style)
+        button.clicked.connect(lambda checked=False, d=daten, b=button: self._status_geaendert(d, b))
+        return button
+
+    def _status_geaendert(self, daten: dict, button: QPushButton):
         gruppe = daten["gruppe"]
         datum = daten["datum"]
         spieler_id = daten["spieler_id"]
         eintrag = gruppe["players"][spieler_id]
         nicht_moeglich = eintrag.setdefault("nicht_moeglich", [])
-        verteilung = gruppe.setdefault("verteilung", {})
-        spieler_ids = verteilung.setdefault(datum, [])
+        spielt = eintrag.setdefault("spielt", [])
+        neuer_zustand = _NAECHSTER_ZUSTAND[self._zustand(daten)]
 
-        if state == Qt.PartiallyChecked:
+        if neuer_zustand == _KANN_NICHT:
             if datum not in nicht_moeglich:
                 nicht_moeglich.append(datum)
-            if spieler_id in spieler_ids:
-                spieler_ids.remove(spieler_id)
-        elif state == Qt.Checked:
+            if datum in spielt:
+                spielt.remove(datum)
+        elif neuer_zustand == _SPIELT:
             if datum in nicht_moeglich:
                 nicht_moeglich.remove(datum)
-            if spieler_id not in spieler_ids:
-                spieler_ids.append(spieler_id)
+            if datum not in spielt:
+                spielt.append(datum)
         else:
             if datum in nicht_moeglich:
                 nicht_moeglich.remove(datum)
-            if spieler_id in spieler_ids:
-                spieler_ids.remove(spieler_id)
-        if not spieler_ids:
-            verteilung.pop(datum, None)
+            if datum in spielt:
+                spielt.remove(datum)
+        daten["nicht_moeglich"] = neuer_zustand == _KANN_NICHT
+        daten["spielt"] = neuer_zustand == _SPIELT
+        text, style = _ANZEIGE[neuer_zustand]
+        button.setText(text)
+        button.setStyleSheet(style)
         legacy_adapter.speichere_saison(self.saison)
-        self._aktualisieren()

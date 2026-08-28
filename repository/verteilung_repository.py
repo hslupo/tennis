@@ -26,3 +26,11 @@ class VerteilungRepository:
             [(termin_id, spieler_id) for spieler_id in spieler_ids],
         )
         self.conn.commit()
+
+    def loeschen_fuer_gruppe(self, gruppe_id: int) -> None:
+        self.conn.execute(
+            """DELETE FROM verteilung
+               WHERE termin_id IN (SELECT id FROM termin WHERE gruppe_id = ?)""",
+            (gruppe_id,),
+        )
+        self.conn.commit()

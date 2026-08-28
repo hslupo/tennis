@@ -28,10 +28,11 @@ class VerfuegbarkeitView(QTableWidget):
     """Matrix aller Termine × aller Gruppenmitglieder: je Zelle einer von drei Zuständen
     (neutral/noch nicht festgelegt, kann nicht, spielt), Klick schaltet weiter."""
 
-    def __init__(self, saison: dict, wochentag_key: str, parent=None):
+    def __init__(self, saison: dict, wochentag_key: str, parent=None, bearbeitbar: bool = True):
         super().__init__(parent)
         self.saison = saison
         self.wochentag_key = wochentag_key
+        self.bearbeitbar = bearbeitbar
         self._aufbauen()
 
     @property
@@ -72,7 +73,9 @@ class VerfuegbarkeitView(QTableWidget):
         text, style = _ANZEIGE[zustand]
         button = QPushButton(text)
         button.setStyleSheet(style)
-        button.clicked.connect(lambda checked=False, t=termin, p=spieler_id, b=button: self._weiterschalten(t, p, b))
+        button.setEnabled(self.bearbeitbar)
+        if self.bearbeitbar:
+            button.clicked.connect(lambda checked=False, t=termin, p=spieler_id, b=button: self._weiterschalten(t, p, b))
         return button
 
     def _weiterschalten(self, termin: str, spieler_id: int, button: QPushButton):
@@ -95,8 +98,9 @@ class VerfuegbarkeitView(QTableWidget):
 
         legacy_adapter.speichere_saison(self.saison)
 
-    def aktualisieren(self, saison: dict, wochentag_key: str):
+    def aktualisieren(self, saison: dict, wochentag_key: str, bearbeitbar: bool = True):
         self.saison = saison
         self.wochentag_key = wochentag_key
+        self.bearbeitbar = bearbeitbar
         self.clear()
         self._aufbauen()

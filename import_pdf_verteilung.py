@@ -162,13 +162,14 @@ def import_pdf(conn, path: Path, mapping: dict[str, str], create_missing: bool) 
     ).fetchone()
     if group is None:
         cur = conn.execute(
-            """INSERT INTO gruppe (saison_id, name, wochentag, platz, startzeit, endzeit)
-               VALUES (?, ?, ?, '', '', '')""",
+            """INSERT INTO gruppe (saison_id, name, wochentag, platz, startzeit, endzeit, ist_importiert)
+               VALUES (?, ?, ?, '', '', '', 1)""",
             (season_id, day_name.capitalize(), WOCHENTAGE[day_name]),
         )
         group_id = cur.lastrowid
     else:
         group_id = group["id"]
+        conn.execute("UPDATE gruppe SET ist_importiert = 1 WHERE id = ?", (group_id,))
 
     conn.executemany(
         "INSERT OR IGNORE INTO gruppen_mitglied (gruppe_id, spieler_id) VALUES (?, ?)",

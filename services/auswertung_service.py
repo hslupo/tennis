@@ -1,6 +1,7 @@
 """Reine Textauswertung ohne UI-Abhängigkeiten (vorher in auswertung.py mit
 tkinter/Clipboard-Code vermischt)."""
 
+from collections import defaultdict
 from typing import Dict, List
 
 from services.termine_service import generiere_termine
@@ -47,5 +48,31 @@ def erstelle_auswertungstext(saison: Dict, gruppe: Dict, spieler_namen: Dict) ->
         else:
             namen = [str(spieler_namen.get(pid, pid)) for pid in available]
             lines.append(f"{t}: {', '.join(namen)}")
+
+    lines.append("")
+    lines.append("Spielerstatistik → Einsätze und gemeinsame Einsätze")
+    gemeinsame_einsaetze = defaultdict(lambda: defaultdict(int))
+    einsaetze = defaultdict(int)
+    for spieler_ids in gruppe.get("verteilung", {}).values():
+        eindeutige_spieler_ids = list(dict.fromkeys(spieler_ids))
+        for pid in eindeutige_spieler_ids:
+            einsaetze[pid] += 1
+        for index, pid in enumerate(eindeutige_spieler_ids):
+            for anderer_pid in eindeutige_spieler_ids[index + 1:]:
+                gemeinsame_einsaetze[pid][anderer_pid] += 1
+                gemeinsame_einsaetze[anderer_pid][pid] += 1
+
+    for pid in alle_spieler:
+        name = spieler_namen.get(pid, str(pid))
+        mitspieler = [
+            f"{spieler_namen.get(anderer_pid, anderer_pid)}: {anzahl}"
+            for anderer_pid, anzahl in sorted(
+                gemeinsame_einsaetze[pid].items(),
+                key=lambda eintrag: str(spieler_namen.get(eintrag[0], eintrag[0])).lower(),
+            )
+        ]
+        zusammen = ", ".join(mitspieler) if mitspieler else "keine"
+        einsatz_text = "Einsatz" if einsaetze[pid] == 1 else "Einsätze"
+        lines.append(f"{name}: {einsaetze[pid]} {einsatz_text}; zusammen mit {zusammen}")
 
     return "\n".join(lines)

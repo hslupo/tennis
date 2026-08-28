@@ -40,6 +40,26 @@ class AuswertungServiceTest(unittest.TestCase):
         text = erstelle_auswertungstext({}, self.gruppe, self.spieler_namen)
         self.assertIn("Keine Saison-Daten", text)
 
+    def test_erstellt_einsatz_und_paarungsstatistik(self):
+        gruppe = {
+            "wochentag": "Freitag",
+            "players": {
+                1: {"nicht_moeglich": []},
+                2: {"nicht_moeglich": []},
+                3: {"nicht_moeglich": []},
+            },
+            "verteilung": {
+                "19.09.2025": [1, 2],
+                "26.09.2025": [1, 2, 3],
+            },
+        }
+
+        text = erstelle_auswertungstext(self.saison, gruppe, self.spieler_namen)
+
+        self.assertIn("Anna: 2 Einsätze; zusammen mit 3: 1, Bert: 2", text)
+        self.assertIn("Bert: 2 Einsätze; zusammen mit 3: 1, Anna: 2", text)
+        self.assertIn("3: 1 Einsatz; zusammen mit Anna: 1, Bert: 1", text)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -20,7 +20,8 @@ CREATE TABLE gruppe (
     platz TEXT NOT NULL,
     startzeit TEXT NOT NULL,
     endzeit TEXT NOT NULL,
-    seed INTEGER
+    seed INTEGER,
+    ist_importiert INTEGER NOT NULL DEFAULT 0 CHECK (ist_importiert IN (0, 1))
 );
 
 CREATE TABLE spieler (

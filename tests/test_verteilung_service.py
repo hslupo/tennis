@@ -28,6 +28,51 @@ class VerteilungServiceTest(unittest.TestCase):
         ergebnis = verteile_gruppe(gruppe, "2025-09-15", "2025-09-19", spieler_pro_termin=4, seed=1)
         self.assertNotIn(1, ergebnis["19.09.2025"])
 
+    def test_bevorzugt_spielt_markierte_spieler(self):
+        gruppe = _gruppe({1: [], 2: [], 3: [], 4: [], 5: []})
+        gruppe["players"][1]["spielt"] = ["19.09.2025"]
+
+        ergebnis = verteile_gruppe(
+            gruppe, "2025-09-15", "2025-09-19", spieler_pro_termin=4, seed=1,
+        )
+
+        self.assertIn(1, ergebnis["19.09.2025"])
+
+    def test_vermeidet_lange_pausen(self):
+        gruppe = _gruppe({i: [] for i in range(1, 9)})
+        ergebnis = verteile_gruppe(
+            gruppe, "2025-09-15", "2025-11-07", spieler_pro_termin=4, seed=1,
+        )
+
+        verpasste_termine = {spieler_id: 0 for spieler_id in gruppe["players"]}
+        maximale_pause = {spieler_id: 0 for spieler_id in gruppe["players"]}
+        for spieler_ids in ergebnis.values():
+            for spieler_id in verpasste_termine:
+                if spieler_id in spieler_ids:
+                    verpasste_termine[spieler_id] = 0
+                else:
+                    verpasste_termine[spieler_id] += 1
+                    maximale_pause[spieler_id] = max(
+                        maximale_pause[spieler_id], verpasste_termine[spieler_id]
+                    )
+
+        self.assertLessEqual(max(maximale_pause.values()), 2)
+
+    def test_vermeidet_wiederholte_paarungen(self):
+        gruppe = _gruppe({i: [] for i in range(1, 9)})
+        ergebnis = verteile_gruppe(
+            gruppe, "2025-09-15", "2025-12-26", spieler_pro_termin=4, seed=1,
+        )
+
+        paarungen = {}
+        for spieler_ids in ergebnis.values():
+            for index, spieler_id in enumerate(spieler_ids):
+                for anderer_id in spieler_ids[index + 1:]:
+                    paar = tuple(sorted((spieler_id, anderer_id)))
+                    paarungen[paar] = paarungen.get(paar, 0) + 1
+
+        self.assertLessEqual(max(paarungen.values()), 5)
+
     def test_ueberschreitet_spieler_pro_termin_nicht(self):
         gruppe = _gruppe({i: [] for i in range(1, 9)})
         ergebnis = verteile_gruppe(gruppe, "2025-09-15", "2025-10-15", spieler_pro_termin=4, seed=7)

@@ -122,6 +122,7 @@ def lade_saison(jahr: int) -> dict | None:
             "startzeit": g["startzeit"],
             "endzeit": g["endzeit"],
             "seed": g["seed"],
+            "ist_importiert": bool(g["ist_importiert"]),
             "players": players,
             "verteilung": verteilung_dmy,
         }
@@ -151,6 +152,7 @@ def speichere_saison(saison: dict) -> None:
             startzeit=gruppe.get("startzeit", ""),
             endzeit=gruppe.get("endzeit", ""),
             seed=gruppe.get("seed"),
+            ist_importiert=gruppe.get("ist_importiert"),
         )
 
         gewuenschte_mitglieder = set(gruppe.get("players", {}).keys())
@@ -189,6 +191,7 @@ def speichere_saison(saison: dict) -> None:
             for iso in vorhanden_spielt_iso - gewuenscht_spielt_iso:
                 _termin_repo.spielt_bestaetigt_entfernen(termin_ids[iso], spieler_id)
 
+        _verteilung_repo.loeschen_fuer_gruppe(gruppe_id)
         for datum_dmy, spieler_ids in gruppe.get("verteilung", {}).items():
             _verteilung_repo.ersetzen_fuer_termin(termin_ids[_dmy_zu_iso(datum_dmy)], spieler_ids)
 

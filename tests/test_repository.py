@@ -56,6 +56,14 @@ class RepositoryTest(unittest.TestCase):
         row = self.gruppe_repo.get(g1)
         self.assertEqual(row["platz"], "5")
 
+    def test_importierte_gruppe_bleibt_als_solche_markiert(self):
+        saison_id = self.saison_repo.upsert(2026, "2026-09-21", "2027-04-25")
+        gruppe_id = self.gruppe_repo.upsert(
+            saison_id, 1, "Dienstag", "", "", "", ist_importiert=True,
+        )
+        self.gruppe_repo.upsert(saison_id, 1, "Dienstag", "1", "18:00", "20:00")
+        self.assertTrue(self.gruppe_repo.get(gruppe_id)["ist_importiert"])
+
     def test_gruppen_mitgliedschaft_und_override(self):
         saison_id = self.saison_repo.upsert(2025, "2025-09-15", "2026-04-26")
         gruppe_id = self.gruppe_repo.upsert(saison_id, 4, "Freitag", "3", "16:00", "17:30")
@@ -130,6 +138,9 @@ class RepositoryTest(unittest.TestCase):
 
         self.verteilung_repo.ersetzen_fuer_termin(termin_id, [s1])
         self.assertEqual(self.verteilung_repo.fuer_gruppe(gruppe_id), {"2025-09-19": [s1]})
+
+        self.verteilung_repo.loeschen_fuer_gruppe(gruppe_id)
+        self.assertEqual(self.verteilung_repo.fuer_gruppe(gruppe_id), {})
 
     def test_spieler_loeschen_kaskadiert_auf_mitgliedschaft(self):
         saison_id = self.saison_repo.upsert(2025, "2025-09-15", "2026-04-26")

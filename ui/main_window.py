@@ -3,7 +3,7 @@ import datetime
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton,
-    QListWidget, QListWidgetItem, QComboBox,
+    QListWidget, QListWidgetItem, QComboBox, QMessageBox,
 )
 
 import legacy_adapter
@@ -242,6 +242,7 @@ class MainWindow(QMainWindow):
 
         btn_verwalten = QPushButton("Spieler verwalten")
         btn_verwalten.clicked.connect(self._spieler_verwalten)
+        btn_verwalten.setEnabled(not gruppe["ist_importiert"])
         links_layout.addWidget(btn_verwalten)
 
         btn_auswertung = QPushButton("Auswertung")
@@ -250,13 +251,21 @@ class MainWindow(QMainWindow):
 
         btn_verteilung = QPushButton("Verteilung planen")
         btn_verteilung.clicked.connect(self._verteilung_planen)
+        btn_verteilung.setEnabled(not gruppe["ist_importiert"])
         links_layout.addWidget(btn_verteilung)
+
+        btn_verteilung_loeschen = QPushButton("Verteilung löschen")
+        btn_verteilung_loeschen.clicked.connect(self._verteilung_loeschen)
+        btn_verteilung_loeschen.setEnabled(not gruppe["ist_importiert"] and bool(gruppe.get("verteilung")))
+        links_layout.addWidget(btn_verteilung_loeschen)
 
         links_layout.addStretch()
         content_row.addWidget(links_widget)
 
         # rechts: Verfügbarkeits-Matrix
-        self.verfuegbarkeit_view = VerfuegbarkeitView(self.saison, wochentag_key)
+        self.verfuegbarkeit_view = VerfuegbarkeitView(
+            self.saison, wochentag_key, bearbeitbar=not gruppe["ist_importiert"],
+        )
         content_row.addWidget(self.verfuegbarkeit_view, stretch=1)
 
     # ---------- Aktionen ----------
@@ -279,6 +288,8 @@ class MainWindow(QMainWindow):
         ) if self.saison else None
         dlg = SpielerTermineDialog(self, self.saison or {}, self.spieler_namen, spieler_id)
         dlg.exec()
+        self.saison = legacy_adapter.lade_saison(self.jahr)
+        self.refresh()
 
     def _spieler_verwalten(self):
         def on_change(neue_saison):
@@ -307,3 +318,24 @@ class MainWindow(QMainWindow):
 
         dlg = VerteilungDialog(self, self.jahr, self.wochentag_key, self.saison, anzeige_namen, on_change)
         dlg.exec()
+
+    def _verteilung_loeschen(self):
+        gruppe = self.saison["groups"][self.wochentag_key]
+        if not gruppe.get("verteilung"):
+            return
+
+        bestaetigung = QMessageBox.question(
+            self,
+            "Verteilung löschen",
+            f"Soll die Verteilung der {gruppe['wochentag']}gruppe wirklich gelöscht werden?\n\n"
+            "Spieler und persönliche Statusangaben bleiben erhalten.",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
+        if bestaetigung != QMessageBox.Yes:
+            return
+
+        gruppe["verteilung"] = {}
+        legacy_adapter.speichere_saison(self.saison)
+        self.saison = legacy_adapter.lade_saison(self.jahr)
+        self._zeige_gruppe(self.wochentag_key)

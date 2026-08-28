@@ -7,21 +7,21 @@ class GruppeRepository:
 
     def fuer_saison(self, saison_id: int) -> list[sqlite3.Row]:
         return self.conn.execute(
-            """SELECT id, saison_id, name, wochentag, platz, startzeit, endzeit, seed
+                """SELECT id, saison_id, name, wochentag, platz, startzeit, endzeit, seed, ist_importiert
                FROM gruppe WHERE saison_id = ? ORDER BY wochentag""",
             (saison_id,),
         ).fetchall()
 
     def get(self, gruppe_id: int) -> sqlite3.Row | None:
         return self.conn.execute(
-            """SELECT id, saison_id, name, wochentag, platz, startzeit, endzeit, seed
+                """SELECT id, saison_id, name, wochentag, platz, startzeit, endzeit, seed, ist_importiert
                FROM gruppe WHERE id = ?""",
             (gruppe_id,),
         ).fetchone()
 
     def get_by_wochentag(self, saison_id: int, wochentag: int) -> sqlite3.Row | None:
         return self.conn.execute(
-            """SELECT id, saison_id, name, wochentag, platz, startzeit, endzeit, seed
+                """SELECT id, saison_id, name, wochentag, platz, startzeit, endzeit, seed, ist_importiert
                FROM gruppe WHERE saison_id = ? AND wochentag = ?""",
             (saison_id, wochentag),
         ).fetchone()
@@ -35,6 +35,7 @@ class GruppeRepository:
         startzeit: str,
         endzeit: str,
         seed: int | None = None,
+        ist_importiert: bool | None = None,
     ) -> int:
         """Legt die Gruppe für diesen Wochentag an oder überschreibt ihre Eckdaten
         (bildet das bisherige Verhalten nach, bei dem eine Gruppe je Wochentag pro
@@ -42,18 +43,26 @@ class GruppeRepository:
         vorhanden = self.get_by_wochentag(saison_id, wochentag)
         if vorhanden is None:
             cur = self.conn.execute(
-                """INSERT INTO gruppe (saison_id, name, wochentag, platz, startzeit, endzeit, seed)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)""",
-                (saison_id, name, wochentag, platz, startzeit, endzeit, seed),
+                     """INSERT INTO gruppe
+                         (saison_id, name, wochentag, platz, startzeit, endzeit, seed, ist_importiert)
+                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                     (saison_id, name, wochentag, platz, startzeit, endzeit, seed, bool(ist_importiert)),
             )
             self.conn.commit()
             return cur.lastrowid
 
-        self.conn.execute(
-            """UPDATE gruppe SET name = ?, platz = ?, startzeit = ?, endzeit = ?, seed = ?
-               WHERE id = ?""",
-            (name, platz, startzeit, endzeit, seed, vorhanden["id"]),
-        )
+        if ist_importiert is None:
+            self.conn.execute(
+                """UPDATE gruppe SET name = ?, platz = ?, startzeit = ?, endzeit = ?, seed = ?
+                   WHERE id = ?""",
+                (name, platz, startzeit, endzeit, seed, vorhanden["id"]),
+            )
+        else:
+            self.conn.execute(
+                """UPDATE gruppe SET name = ?, platz = ?, startzeit = ?, endzeit = ?, seed = ?,
+                           ist_importiert = ? WHERE id = ?""",
+                (name, platz, startzeit, endzeit, seed, bool(ist_importiert), vorhanden["id"]),
+            )
         self.conn.commit()
         return vorhanden["id"]
 
