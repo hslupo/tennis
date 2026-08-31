@@ -1,6 +1,6 @@
 import datetime
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton,
     QListWidget, QListWidgetItem, QComboBox, QMessageBox,
@@ -16,6 +16,7 @@ from ui.verfuegbarkeit_view import VerfuegbarkeitView
 from ui.verteilung_dialog import VerteilungDialog
 from ui.auswertung_dialog import AuswertungDialog
 from ui.spieler_termine_dialog import SpielerTermineDialog
+from ui.export_ics_dialog import ExportIcsDialog
 
 WOCHENTAGE = [
     "Montag", "Dienstag", "Mittwoch",
@@ -23,6 +24,16 @@ WOCHENTAGE = [
 ]
 
 NEU_MARKER = "* NEU *"
+
+
+class KlickbaresLabel(QLabel):
+    """QLabel, das ein Signal bei Doppelklick sendet."""
+
+    doppelklick = Signal()
+
+    def mouseDoubleClickEvent(self, event):
+        self.doppelklick.emit()
+        super().mouseDoubleClickEvent(event)
 
 
 class MainWindow(QMainWindow):
@@ -45,8 +56,10 @@ class MainWindow(QMainWindow):
 
         root_layout.addLayout(self._baue_topleiste())
 
-        self.heading_label = QLabel()
+        self.heading_label = KlickbaresLabel()
         self.heading_label.setStyleSheet("font-size: 16pt; font-weight: bold;")
+        self.heading_label.setToolTip("Doppelklick zum Bearbeiten der Gruppe")
+        self.heading_label.doppelklick.connect(self._gruppe_bearbeiten)
         root_layout.addWidget(self.heading_label)
 
         self.main_area = QWidget()
@@ -209,6 +222,14 @@ class MainWindow(QMainWindow):
         dlg.exec()
         self.refresh()
 
+    def _gruppe_bearbeiten(self):
+        if not self.wochentag_key or not self.saison:
+            return
+        gruppe = self.saison["groups"][self.wochentag_key]
+        dlg = GruppeDialog(self, self.jahr, gruppe["wochentag"], on_saved=self.refresh, bearbeiten=True)
+        dlg.exec()
+        self.refresh()
+
     # ---------- Gruppe anzeigen ----------
     def _zeige_gruppe(self, wochentag_key: str):
         self._layout_leeren(self.main_layout)
@@ -248,6 +269,10 @@ class MainWindow(QMainWindow):
         btn_auswertung = QPushButton("Auswertung")
         btn_auswertung.clicked.connect(self._auswertung_anzeigen)
         links_layout.addWidget(btn_auswertung)
+
+        btn_ics_export = QPushButton("ICS-Export")
+        btn_ics_export.clicked.connect(self._ics_export_anzeigen)
+        links_layout.addWidget(btn_ics_export)
 
         btn_verteilung = QPushButton("Verteilung planen")
         btn_verteilung.clicked.connect(self._verteilung_planen)
@@ -306,6 +331,10 @@ class MainWindow(QMainWindow):
         gruppe = self.saison["groups"][self.wochentag_key]
         anzeige_namen = {pid: eintrag["anzeige_name"] for pid, eintrag in gruppe["players"].items()}
         dlg = AuswertungDialog(self, self.saison, gruppe, anzeige_namen)
+        dlg.exec()
+
+    def _ics_export_anzeigen(self):
+        dlg = ExportIcsDialog(self, self.saison, self.wochentag_key, self.spieler_namen)
         dlg.exec()
 
     def _verteilung_planen(self):

@@ -1,0 +1,124 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:Tennisverteilung
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Bine\, Erna\, Horst\, Rene
+DTEND:20261225T163000Z
+LOCATION:Platz 3
+DTSTART:20261225T150000Z
+SUMMARY:Tennis: Teddy\, Meiki\, Maria\, Michi
+UID:c920bd8d-72e2-4f79-bfbd-087570235ae6@c920.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Erna\, Horst\, Maria\, Michi
+DTEND:20270129T163000Z
+LOCATION:Platz 3
+DTSTART:20270129T150000Z
+SUMMARY:Tennis: Rene\, Teddy\, Bine\, Meiki
+UID:82b5e340-c8d3-4566-8c92-ee563e248e73@82b5.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Bine\, Maria\, Teddy
+DTEND:20261016T153000Z
+LOCATION:Platz 3
+DTSTART:20261016T140000Z
+SUMMARY:Tennis: Horst\, Meiki\, Erna\, Michi
+UID:e2c45777-4f59-4d0c-a184-c8500657bad4@e2c4.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Maria\, Michi\, Rene\, Teddy
+DTEND:20270226T163000Z
+LOCATION:Platz 3
+DTSTART:20270226T150000Z
+SUMMARY:Tennis: Horst\, Bine\, Meiki\, Erna
+UID:2a2b2315-c779-44af-a0ab-e788860ad85b@2a2b.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Bine\, Erna\, Maria\, Teddy
+DTEND:20261030T163000Z
+LOCATION:Platz 3
+DTSTART:20261030T150000Z
+SUMMARY:Tennis: Rene\, Horst\, Meiki\, Michi
+UID:d44e1369-0d72-4356-ba2d-c737eb298844@d44e.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Bine\, Horst\, Maria\, Rene
+DTEND:20261002T153000Z
+LOCATION:Platz 3
+DTSTART:20261002T140000Z
+SUMMARY:Tennis: Teddy\, Meiki\, Erna\, Michi
+UID:ff746cd9-8914-46a5-bd0a-b064f7fb49e8@ff74.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Erna\, Horst\, Rene\, Teddy
+DTEND:20270108T163000Z
+LOCATION:Platz 3
+DTSTART:20270108T150000Z
+SUMMARY:Tennis: Bine\, Meiki\, Maria\, Michi
+UID:c36ce64e-7ebc-4f99-b205-cd6c4c4e2bfc@c36c.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Bine\, Horst\, Maria\, Teddy
+DTEND:20270416T153000Z
+LOCATION:Platz 3
+DTSTART:20270416T140000Z
+SUMMARY:Tennis: Rene\, Meiki\, Erna\, Michi
+UID:a7e48db9-8a7f-4e2d-882a-26d031142326@a7e4.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Bine\, Horst\, Michi\, Teddy
+DTEND:20261120T163000Z
+LOCATION:Platz 3
+DTSTART:20261120T150000Z
+SUMMARY:Tennis: Rene\, Meiki\, Erna\, Maria
+UID:5e8d40a1-af44-4299-b477-e8f108fb9480@5e8d.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Bine\, Erna\, Michi\, Rene
+DTEND:20261211T163000Z
+LOCATION:Platz 3
+DTSTART:20261211T150000Z
+SUMMARY:Tennis: Horst\, Teddy\, Meiki\, Maria
+UID:8cdcb7b3-c5d2-4641-ae6f-48dd2527bf73@8cdc.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Erna\, Maria\, Michi\, Teddy
+DTEND:20270212T163000Z
+LOCATION:Platz 3
+DTSTART:20270212T150000Z
+SUMMARY:Tennis: Rene\, Horst\, Bine\, Meiki
+UID:aa3b9996-eb87-4205-bfe6-5367303ea226@aa3b.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, Michi\, Rene\, Teddy
+DTEND:20270312T163000Z
+LOCATION:Platz 3
+DTSTART:20270312T150000Z
+SUMMARY:Tennis: Bine\, Meiki\, Erna\, Maria
+UID:6442e7f4-3863-4a0f-af53-3dec36db70fe@6442.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, Michi\, Teddy
+DTEND:20270326T163000Z
+LOCATION:Platz 3
+DTSTART:20270326T150000Z
+SUMMARY:Tennis: Bine\, Meiki\, Erna\, Maria
+UID:5d4c5b05-afb8-4392-b9ab-acf46bb5e922@5d4c.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Bine\, Maria\, Michi
+DTEND:20270115T163000Z
+LOCATION:Platz 3
+DTSTART:20270115T150000Z
+SUMMARY:Tennis: Rene\, Teddy\, Meiki\, Erna
+UID:cf2daece-5863-4ba9-9e88-f47044f9d743@cf2d.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Erna\, Maria\, Michi\, Rene
+DTEND:20261127T163000Z
+LOCATION:Platz 3
+DTSTART:20261127T150000Z
+SUMMARY:Tennis: Horst\, Teddy\, Bine\, Meiki
+UID:46684a03-c4af-4da6-8929-0b32f13914ea@4668.org
+END:VEVENT
+END:VCALENDAR

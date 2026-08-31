@@ -1,0 +1,292 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:Tennisverteilung
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Henning\, Horst
+DTEND:20270124T113000Z
+LOCATION:Platz 2
+DTSTART:20270124T093000Z
+SUMMARY:Tennis: Rene\, Victor\, Teddy\, Mani
+UID:c19a8c26-ef66-4c0f-a587-32ff7d728820@c19a.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, HorstG\, Karin
+DTEND:20270202T110000Z
+LOCATION:Platz 3
+DTSTART:20270202T090000Z
+SUMMARY:Tennis: Horst\, Mani\, Schwede\, Jürgen
+UID:1ab964bc-8c05-4e80-b6ea-f745bb35ac6c@1ab9.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Henning\, Horst\, Teddy
+DTEND:20270411T103000Z
+LOCATION:Platz 2
+DTSTART:20270411T083000Z
+SUMMARY:Tennis: Rene\, Victor\, Mani\, Hartmut
+UID:239b5bee-da38-42fe-bfbe-9d3f460f25e4@239b.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Teddy
+DTEND:20261025T113000Z
+LOCATION:Platz 2
+DTSTART:20261025T093000Z
+SUMMARY:Tennis: Horst\, Victor\, Mani\, Henning
+UID:4f4eaf45-5d80-463d-8907-d3aa7b285eeb@4f4e.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Karin\, Schwede
+DTEND:20270330T100000Z
+LOCATION:Platz 3
+DTSTART:20270330T080000Z
+SUMMARY:Tennis: Horst\, HorstG\, Mani\, Jürgen
+UID:03c394ec-f030-49eb-b04d-5df8525ea0a5@03c3.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: HorstG
+DTEND:20261020T100000Z
+LOCATION:Platz 3
+DTSTART:20261020T080000Z
+SUMMARY:Tennis: Horst\, Mani\, Karin\, Schwede
+UID:37ef741d-f70b-4378-a61a-8ce8ced8e93b@37ef.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, HorstG\, Karin
+DTEND:20270105T110000Z
+LOCATION:Platz 3
+DTSTART:20270105T090000Z
+SUMMARY:Tennis: Mani\, Schwede\, Hartmut\, Jürgen
+UID:b59ad17e-98c6-4668-ad63-10d4b88f4032@b59a.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Horst\, Rene
+DTEND:20261220T113000Z
+LOCATION:Platz 2
+DTSTART:20261220T093000Z
+SUMMARY:Tennis: Victor\, Teddy\, Mani\, Henning
+UID:0c35f568-b85a-4e9f-ab22-64c3762a3050@0c35.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Teddy\, Victor
+DTEND:20270131T113000Z
+LOCATION:Platz 2
+DTSTART:20270131T093000Z
+SUMMARY:Tennis: Horst\, Mani\, Hartmut\, Henning
+UID:09253dd1-38e6-449d-b0b1-fda06ec32593@0925.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, Teddy
+DTEND:20270321T113000Z
+LOCATION:Platz 2
+DTSTART:20270321T093000Z
+SUMMARY:Tennis: Victor\, Mani\, Hartmut\, Henning
+UID:1b7b71bb-2f54-471c-8168-8bdfb443e32c@1b7b.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Henning
+DTEND:20270328T103000Z
+LOCATION:Platz 2
+DTSTART:20270328T083000Z
+SUMMARY:Tennis: Horst\, Victor\, Teddy\, Mani
+UID:ed1c9648-b4c9-42b3-a278-5770f72089d0@ed1c.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Horst\, Jürgen
+DTEND:20270223T110000Z
+LOCATION:Platz 3
+DTSTART:20270223T090000Z
+SUMMARY:Tennis: HorstG\, Mani\, Karin\, Schwede
+UID:8729db7e-c727-4d7a-93e3-eb185c428712@8729.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, HorstG\, Jürgen
+DTEND:20270413T100000Z
+LOCATION:Platz 3
+DTSTART:20270413T080000Z
+SUMMARY:Tennis: Horst\, Mani\, Karin\, Schwede
+UID:967e7ff4-cd54-47d3-ae58-203b803905e1@967e.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, Karin\, Schwede
+DTEND:20261215T110000Z
+LOCATION:Platz 3
+DTSTART:20261215T090000Z
+SUMMARY:Tennis: HorstG\, Mani\, Hartmut\, Jürgen
+UID:d6b66023-9ddf-411a-b9f1-5e253e430485@d6b6.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: HorstG\, Schwede
+DTEND:20270119T110000Z
+LOCATION:Platz 3
+DTSTART:20270119T090000Z
+SUMMARY:Tennis: Horst\, Mani\, Karin\, Jürgen
+UID:5386219a-7bb6-409e-aff3-2b87eebcc2eb@5386.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Horst\, Jürgen
+DTEND:20270209T110000Z
+LOCATION:Platz 3
+DTSTART:20270209T090000Z
+SUMMARY:Tennis: HorstG\, Mani\, Karin\, Schwede
+UID:493d0fdb-a6ee-4d9b-8036-87e3a9b862d8@493d.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, Victor
+DTEND:20261108T113000Z
+LOCATION:Platz 2
+DTSTART:20261108T093000Z
+SUMMARY:Tennis: Teddy\, Mani\, Hartmut\, Henning
+UID:718ef546-7a65-4f69-9d26-bff5be4588d2@718e.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Henning\, Horst
+DTEND:20270103T113000Z
+LOCATION:Platz 2
+DTSTART:20270103T093000Z
+SUMMARY:Tennis: Rene\, Victor\, Teddy\, Mani
+UID:8e8b6744-d9ec-42a7-b7cc-68ae6a4533ba@8e8b.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst
+DTEND:20261013T100000Z
+LOCATION:Platz 3
+DTSTART:20261013T080000Z
+SUMMARY:Tennis: HorstG\, Mani\, Karin\, Schwede
+UID:60123585-9efc-4d8d-84e2-ca45dcef3d40@6012.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Henning\, Teddy\, Victor
+DTEND:20270314T113000Z
+LOCATION:Platz 2
+DTSTART:20270314T093000Z
+SUMMARY:Tennis: Rene\, Horst\, Mani\, Hartmut
+UID:3363f825-e913-412c-8149-a4fbe4dc9927@3363.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Horst\, Victor
+DTEND:20261206T113000Z
+LOCATION:Platz 2
+DTSTART:20261206T093000Z
+SUMMARY:Tennis: Rene\, Teddy\, Mani\, Henning
+UID:bcd93286-37db-4f6c-a5d1-832af2ad45fd@bcd9.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Jürgen\, Schwede
+DTEND:20270316T110000Z
+LOCATION:Platz 3
+DTSTART:20270316T090000Z
+SUMMARY:Tennis: Horst\, HorstG\, Mani\, Karin
+UID:9021758a-f4c6-4f57-aaf9-f0846efc87d2@9021.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Rene\, Victor
+DTEND:20270110T113000Z
+LOCATION:Platz 2
+DTSTART:20270110T093000Z
+SUMMARY:Tennis: Horst\, Teddy\, Mani\, Henning
+UID:61a2b904-59fc-4cb7-a75c-86d5849fe79d@61a2.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, HorstG\, Karin
+DTEND:20261124T110000Z
+LOCATION:Platz 3
+DTSTART:20261124T090000Z
+SUMMARY:Tennis: Mani\, Schwede\, Hartmut\, Jürgen
+UID:2719c4ec-a7f2-41fc-a73b-0d7aa2da8e29@2719.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Jürgen\, Schwede
+DTEND:20261229T110000Z
+LOCATION:Platz 3
+DTSTART:20261229T090000Z
+SUMMARY:Tennis: Horst\, HorstG\, Mani\, Karin
+UID:fdda3432-e15b-4a75-bf8d-710fb741d26a@fdda.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Jürgen\, Schwede
+DTEND:20261117T110000Z
+LOCATION:Platz 3
+DTSTART:20261117T090000Z
+SUMMARY:Tennis: Horst\, HorstG\, Mani\, Karin
+UID:b11dc242-f63f-44f3-b6b2-ee556b698898@b11d.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, HorstG\, Schwede
+DTEND:20270302T110000Z
+LOCATION:Platz 3
+DTSTART:20270302T090000Z
+SUMMARY:Tennis: Mani\, Karin\, Hartmut\, Jürgen
+UID:bcb29e1f-32dd-44e6-8046-f0233408e732@bcb2.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Horst\, Rene
+DTEND:20270214T113000Z
+LOCATION:Platz 2
+DTSTART:20270214T093000Z
+SUMMARY:Tennis: Victor\, Teddy\, Mani\, Henning
+UID:c0e0e256-1a5c-4926-a35f-7b0fde39d511@c0e0.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Henning\, Teddy\, Victor
+DTEND:20270221T113000Z
+LOCATION:Platz 2
+DTSTART:20270221T093000Z
+SUMMARY:Tennis: Rene\, Horst\, Mani\, Hartmut
+UID:6a377844-d0de-4da4-a143-dbcc0ffc6301@6a37.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst
+DTEND:20261018T103000Z
+LOCATION:Platz 2
+DTSTART:20261018T083000Z
+SUMMARY:Tennis: Victor\, Teddy\, Mani\, Henning
+UID:0c75ba7a-e073-4f62-9a5c-7fe700b7ac0c@0c75.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, Rene
+DTEND:20270228T113000Z
+LOCATION:Platz 2
+DTSTART:20270228T093000Z
+SUMMARY:Tennis: Victor\, Teddy\, Mani\, Henning
+UID:8d7aa9b5-e5e0-4a1a-8131-078de7d45d47@8d7a.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Karin\, Schwede
+DTEND:20261027T110000Z
+LOCATION:Platz 3
+DTSTART:20261027T090000Z
+SUMMARY:Tennis: Horst\, HorstG\, Mani\, Hartmut
+UID:130e5021-5694-400e-8e29-b8113f49da12@130e.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Horst\, HorstG\, Karin
+DTEND:20261103T110000Z
+LOCATION:Platz 3
+DTSTART:20261103T090000Z
+SUMMARY:Tennis: Mani\, Schwede\, Hartmut\, Jürgen
+UID:48c60551-1604-428c-bee0-eab7f9c6418c@48c6.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, HorstG\, Jürgen
+DTEND:20261208T110000Z
+LOCATION:Platz 3
+DTSTART:20261208T090000Z
+SUMMARY:Tennis: Horst\, Mani\, Karin\, Schwede
+UID:227916ae-7976-47d7-b1e9-d26fb01b5fb2@2279.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Henning\, Teddy\, Victor
+DTEND:20261101T113000Z
+LOCATION:Platz 2
+DTSTART:20261101T093000Z
+SUMMARY:Tennis: Rene\, Horst\, Mani\, Hartmut
+UID:51427e96-5873-43ae-b9b3-01cb76bc8cc4@5142.org
+END:VEVENT
+BEGIN:VEVENT
+DESCRIPTION:Mögliche Ersatzspieler: Hartmut\, Horst\, Victor
+DTEND:20261122T113000Z
+LOCATION:Platz 2
+DTSTART:20261122T093000Z
+SUMMARY:Tennis: Rene\, Teddy\, Mani\, Henning
+UID:93893f4a-0764-4ad4-b474-1f8e920910e6@9389.org
+END:VEVENT
+END:VCALENDAR

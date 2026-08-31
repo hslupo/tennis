@@ -75,4 +75,23 @@ def erstelle_auswertungstext(saison: Dict, gruppe: Dict, spieler_namen: Dict) ->
         einsatz_text = "Einsatz" if einsaetze[pid] == 1 else "Einsätze"
         lines.append(f"{name}: {einsaetze[pid]} {einsatz_text}; zusammen mit {zusammen}")
 
+    lines.append("")
+    lines.append("Geplante Termine → Spieler (mögl. Ersatz)")
+
+    def datum_sortwert(datum: str):
+        tag, monat, jahr = datum.split(".")
+        return (jahr, monat, tag)
+
+    for datum in sorted(gruppe.get("verteilung", {}).keys(), key=datum_sortwert):
+        geplante_ids = gruppe["verteilung"][datum]
+        geplante_namen = sorted((str(spieler_namen.get(pid, pid)) for pid in geplante_ids), reverse=True)
+        namen = ", ".join(geplante_namen)
+        verfuegbare_ids = [pid for pid, d in gruppe.get("players", {}).items() if datum not in d.get("nicht_moeglich", [])]
+        ersatz_ids = [pid for pid in verfuegbare_ids if pid not in geplante_ids]
+        zeile = f"{datum}: {namen}"
+        if ersatz_ids:
+            ersatz_namen = ", ".join(str(spieler_namen.get(pid, pid)) for pid in ersatz_ids)
+            zeile += f" (Ersatz: {ersatz_namen})"
+        lines.append(zeile)
+
     return "\n".join(lines)
