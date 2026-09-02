@@ -5,12 +5,13 @@ from PySide6.QtWidgets import (
 )
 
 import legacy_adapter
-from services.verteilung_service import plane_verteilung, verteile_gruppe
+from services.verteilung_service import ermittle_ersatzspieler, plane_verteilung, verteile_gruppe
 
 
 class _SeedVergleichModel(QAbstractTableModel):
-    def __init__(self, termine: list[str], seeds: tuple[int, ...], vorschlaege: dict, anzeige_namen: dict):
+    def __init__(self, gruppe: dict, termine: list[str], seeds: tuple[int, ...], vorschlaege: dict, anzeige_namen: dict):
         super().__init__()
+        self._gruppe = gruppe
         self._termine = termine
         self._seeds = seeds
         self._vorschlaege = vorschlaege
@@ -20,21 +21,24 @@ class _SeedVergleichModel(QAbstractTableModel):
         return len(self._termine)
 
     def columnCount(self, parent=QModelIndex()) -> int:
-        return len(self._seeds)
+        return len(self._seeds) * 2
 
     def data(self, index, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
             return None
         termin = self._termine[index.row()]
-        seed = self._seeds[index.column()]
+        seed = self._seeds[index.column() // 2]
         spieler_ids = self._vorschlaege[seed][termin]
+        if index.column() % 2:
+            spieler_ids = ermittle_ersatzspieler(self._gruppe, termin, spieler_ids)
         return ", ".join(self._anzeige_namen.get(pid, str(pid)) for pid in spieler_ids)
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role != Qt.DisplayRole:
             return None
         if orientation == Qt.Horizontal:
-            return f"Seed {self._seeds[section]}"
+            seed = self._seeds[section // 2]
+            return f"Seed {seed}" if section % 2 == 0 else "Ersatz"
         return self._termine[section]
 
 
@@ -59,7 +63,7 @@ class VerteilungDialog(QDialog):
         layout = QVBoxLayout(self)
 
         termine, vorschlaege = plane_verteilung(self.gruppe, self.saison, self.SEEDS)
-        self.model = _SeedVergleichModel(termine, self.SEEDS, vorschlaege, self.anzeige_namen)
+        self.model = _SeedVergleichModel(self.gruppe, termine, self.SEEDS, vorschlaege, self.anzeige_namen)
 
         table = QTableView()
         table.setModel(self.model)

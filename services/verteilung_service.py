@@ -12,6 +12,15 @@ KANN_NICHT_PAUSENFAKTOR = 0.5
 GRUENER_WUNSCH_STRAFE = 2
 
 
+def ermittle_ersatzspieler(gruppe: dict, termin: str, spieler_ids: list) -> list:
+    """Liefert verfügbare, für den Termin nicht eingeteilte Gruppenmitglieder."""
+    return [
+        spieler_id
+        for spieler_id, eintrag in gruppe.get("players", {}).items()
+        if termin not in eintrag.get("nicht_moeglich", []) and spieler_id not in spieler_ids
+    ]
+
+
 def verteile_gruppe(
     gruppe: dict,
     start_date: str,

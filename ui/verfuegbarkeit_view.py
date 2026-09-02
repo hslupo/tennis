@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QTableWidget, QPushButton
+from PySide6.QtWidgets import QTableWidget, QTableWidgetItem, QPushButton
 
 import legacy_adapter
+from services.verteilung_service import ermittle_ersatzspieler
 from services.termine_service import generiere_termine
 
 # Zustandszyklus je Zelle: neutral -> kann nicht -> spielt -> neutral -> ...
@@ -45,19 +46,32 @@ class VerfuegbarkeitView(QTableWidget):
         spieler_ids = sorted(gruppe["players"].keys(), key=lambda pid: gruppe["players"][pid]["anzeige_name"].lower())
 
         self.setRowCount(len(termine))
-        self.setColumnCount(len(spieler_ids))
-        self.setHorizontalHeaderLabels([gruppe["players"][pid]["anzeige_name"] for pid in spieler_ids])
+        self.setColumnCount(len(spieler_ids) + 1)
+        self.setHorizontalHeaderLabels(
+            [gruppe["players"][pid]["anzeige_name"] for pid in spieler_ids] + ["Mögliche Ersatzspieler"]
+        )
         self.setVerticalHeaderLabels(termine)
         self.verticalHeader().setDefaultSectionSize(24)
 
         self._termine = termine
         self._spieler_ids = spieler_ids
+        self._ersatz_spalte = len(spieler_ids)
 
         for row, termin in enumerate(termine):
             for col, pid in enumerate(spieler_ids):
                 self.setCellWidget(row, col, self._zustands_button(termin, pid, self._zustand(termin, pid)))
+            self._ersatzspieler_anzeigen(row, termin)
 
         self.resizeColumnsToContents()
+
+    def _ersatzspieler_anzeigen(self, row: int, termin: str):
+        spieler_ids = self.gruppe.get("verteilung", {}).get(termin)
+        if spieler_ids is None:
+            ersatz_namen = ""
+        else:
+            ersatzspieler = ermittle_ersatzspieler(self.gruppe, termin, spieler_ids)
+            ersatz_namen = ", ".join(self.gruppe["players"][pid]["anzeige_name"] for pid in ersatzspieler)
+        self.setItem(row, self._ersatz_spalte, QTableWidgetItem(ersatz_namen))
 
     def _zustand(self, termin: str, spieler_id: int) -> str:
         eintrag = self.gruppe["players"][spieler_id]
@@ -97,6 +111,7 @@ class VerfuegbarkeitView(QTableWidget):
         button.setStyleSheet(style)
 
         legacy_adapter.speichere_saison(self.saison)
+        self._ersatzspieler_anzeigen(self._termine.index(termin), termin)
 
     def aktualisieren(self, saison: dict, wochentag_key: str, bearbeitbar: bool = True):
         self.saison = saison

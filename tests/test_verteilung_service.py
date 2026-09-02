@@ -1,6 +1,6 @@
 import unittest
 
-from services.verteilung_service import plane_verteilung, verteile_gruppe
+from services.verteilung_service import ermittle_ersatzspieler, plane_verteilung, verteile_gruppe
 
 
 def _gruppe(spieler_nicht_moeglich: dict) -> dict:
@@ -11,6 +11,13 @@ def _gruppe(spieler_nicht_moeglich: dict) -> dict:
 
 
 class VerteilungServiceTest(unittest.TestCase):
+    def test_ermittelt_nur_verfuegbare_nicht_eingeteilte_ersatzspieler(self):
+        gruppe = _gruppe({1: [], 2: ["19.09.2025"], 3: [], 4: []})
+
+        ersatzspieler = ermittle_ersatzspieler(gruppe, "19.09.2025", [1, 3])
+
+        self.assertEqual(ersatzspieler, [4])
+
     def test_ist_deterministisch_bei_festem_seed(self):
         gruppe = _gruppe({1: [], 2: [], 3: [], 4: [], 5: []})
         e1 = verteile_gruppe(gruppe, "2025-09-15", "2025-10-15", spieler_pro_termin=4, seed=42)

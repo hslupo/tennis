@@ -1,9 +1,10 @@
 import datetime
+from pathlib import Path
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
-    QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton,
-    QListWidget, QListWidgetItem, QComboBox, QMessageBox,
+    QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton,
+    QListWidget, QListWidgetItem, QComboBox, QMessageBox, QFileDialog,
 )
 
 import legacy_adapter
@@ -284,6 +285,10 @@ class MainWindow(QMainWindow):
         btn_verteilung_loeschen.setEnabled(not gruppe["ist_importiert"] and bool(gruppe.get("verteilung")))
         links_layout.addWidget(btn_verteilung_loeschen)
 
+        btn_fenster_exportieren = QPushButton("Tabelle als Bild exportieren")
+        btn_fenster_exportieren.clicked.connect(self._fenster_exportieren)
+        links_layout.addWidget(btn_fenster_exportieren)
+
         links_layout.addStretch()
         content_row.addWidget(links_widget)
 
@@ -336,6 +341,41 @@ class MainWindow(QMainWindow):
     def _ics_export_anzeigen(self):
         dlg = ExportIcsDialog(self, self.saison, self.wochentag_key, self.spieler_namen)
         dlg.exec()
+
+    def _fenster_exportieren(self):
+        datei, ausgewaehlter_filter = QFileDialog.getSaveFileName(
+            self,
+            "Ansicht als Bild speichern",
+            "tennisverteilung.png",
+            "PNG-Bild (*.png);;JPEG-Bild (*.jpg *.jpeg)",
+        )
+        if not datei:
+            return
+
+        if not Path(datei).suffix:
+            datei += ".jpg" if "JPEG" in ausgewaehlter_filter else ".png"
+
+        if self._vollstaendige_tabelle_als_bild().save(datei):
+            QMessageBox.information(self, "Exportiert", f"Termine gespeichert: {datei}")
+        else:
+            QMessageBox.critical(self, "Fehler", "Das Bild konnte nicht gespeichert werden.")
+
+    def _vollstaendige_tabelle_als_bild(self):
+        tabelle = self.verfuegbarkeit_view
+        urspruengliche_groesse = tabelle.size()
+        breite = tabelle.verticalHeader().width() + sum(
+            tabelle.columnWidth(spalte) for spalte in range(tabelle.columnCount())
+        ) + 2 * tabelle.frameWidth()
+        hoehe = tabelle.horizontalHeader().height() + sum(
+            tabelle.rowHeight(zeile) for zeile in range(tabelle.rowCount())
+        ) + 2 * tabelle.frameWidth()
+
+        tabelle.resize(breite, hoehe)
+        QApplication.processEvents()
+        bild = tabelle.grab()
+        tabelle.resize(urspruengliche_groesse)
+        QApplication.processEvents()
+        return bild
 
     def _verteilung_planen(self):
         gruppe = self.saison["groups"][self.wochentag_key]

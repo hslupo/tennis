@@ -6,6 +6,7 @@ from typing import Dict, Iterable
 
 import pytz
 from ics import Calendar, Event
+from services.verteilung_service import ermittle_ersatzspieler
 
 LOCAL_TZ = pytz.timezone("Europe/Berlin")
 
@@ -33,19 +34,12 @@ def _ereignis_fuer_termin(
     return e
 
 
-def _ersatz_ids(gruppe: Dict, datum: str, spieler_ids: Iterable) -> list:
-    verfuegbare_ids = [
-        pid for pid, d in gruppe.get("players", {}).items() if datum not in d.get("nicht_moeglich", [])
-    ]
-    return [pid for pid in verfuegbare_ids if pid not in spieler_ids]
-
-
 def erstelle_ics_fuer_gruppe(gruppe: Dict, spieler_namen: Dict) -> str:
     """Erstellt einen ICS-Kalender mit allen geplanten Terminen einer Gruppe."""
     c = Calendar()
     c.creator = f"Tennisverteilung {gruppe.get('wochentag', '')}"
     for datum, spieler_ids in gruppe.get("verteilung", {}).items():
-        ersatz_ids = _ersatz_ids(gruppe, datum, spieler_ids)
+        ersatz_ids = ermittle_ersatzspieler(gruppe, datum, spieler_ids)
         c.events.add(_ereignis_fuer_termin(datum, gruppe, spieler_ids, ersatz_ids, spieler_namen))
     return c.serialize()
 
@@ -68,6 +62,6 @@ def erstelle_ics_fuer_spieler(
         for datum, spieler_ids in gruppe.get("verteilung", {}).items():
             if spieler_id not in spieler_ids:
                 continue
-            ersatz_ids = _ersatz_ids(gruppe, datum, spieler_ids)
+            ersatz_ids = ermittle_ersatzspieler(gruppe, datum, spieler_ids)
             c.events.add(_ereignis_fuer_termin(datum, gruppe, spieler_ids, ersatz_ids, spieler_namen))
     return c.serialize()
